@@ -7,5 +7,7 @@ export async function audit(input: {
   environmentId?: string;
   metadata?: Record<string, string>;
 }) {
-  await getDb().insert(auditLogs).values({ ...input, metadata: input.metadata ?? {} });
+  await getDb()
+    .insert(auditLogs)
+    .values({ ...input, metadata: input.metadata ?? {} });
 }

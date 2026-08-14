@@ -1,13 +1,118 @@
 import Link from "next/link";
 import { ArrowRight, FolderKanban, Plus } from "lucide-react";
-import { countDistinct, desc, environments, eq, getDb, projects, secrets } from "@envvault/db";
+import {
+  countDistinct,
+  desc,
+  environments,
+  eq,
+  getDb,
+  projects,
+  secrets,
+} from "@envvault/db";
 import { createProject } from "@/app/actions";
 import { requireUser } from "@/lib/authorization";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 export const dynamic = "force-dynamic";
-export default async function Page() { const user = await requireUser(); const rows = await getDb().select({ id: projects.id, name: projects.name, description: projects.description, updatedAt: projects.updatedAt, environments: countDistinct(environments.id), secrets: countDistinct(secrets.id) }).from(projects).leftJoin(environments, eq(projects.id, environments.projectId)).leftJoin(secrets, eq(environments.id, secrets.environmentId)).where(eq(projects.userId, user.id)).groupBy(projects.id).orderBy(desc(projects.updatedAt)); return <div><div className="mb-8 flex justify-between"><div><p className="text-sm text-muted-foreground">Workspace</p><h1 className="mt-1 text-2xl font-semibold">Projects</h1></div><Dialog><DialogTrigger asChild><Button><Plus />New Project</Button></DialogTrigger><DialogContent><DialogHeader><DialogTitle>Create project</DialogTitle><DialogDescription>Organize secrets in isolated environments.</DialogDescription></DialogHeader><form action={createProject} className="space-y-4"><div><Label>Name</Label><Input name="name" placeholder="SQLVault" required /></div><div><Label>Slug</Label><Input name="slug" placeholder="sqlvault" required /></div><div><Label>Description</Label><Textarea name="description" /></div><Button className="w-full">Create project</Button></form></DialogContent></Dialog></div>{rows.length ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{rows.map((p) => <Link key={p.id} href={`/dashboard/projects/${p.id}`}><Card className="h-full hover:border-primary/30"><CardContent className="p-5"><div className="flex justify-between"><FolderKanban className="size-5" /><ArrowRight className="size-4" /></div><h2 className="mt-5 font-medium">{p.name}</h2><p className="mt-1 text-sm text-muted-foreground">{p.description || "No description"}</p><p className="mt-5 border-t pt-4 font-mono text-xs text-muted-foreground">{p.environments} envs · {p.secrets} secrets</p></CardContent></Card></Link>)}</div> : <Card><CardContent className="py-20 text-center"><p className="font-medium">No projects yet</p><p className="mt-1 text-sm text-muted-foreground">Create your first project to start managing secrets.</p></CardContent></Card>}</div>; }
+export default async function Page() {
+  const user = await requireUser();
+  const rows = await getDb()
+    .select({
+      id: projects.id,
+      name: projects.name,
+      description: projects.description,
+      updatedAt: projects.updatedAt,
+      environments: countDistinct(environments.id),
+      secrets: countDistinct(secrets.id),
+    })
+    .from(projects)
+    .leftJoin(environments, eq(projects.id, environments.projectId))
+    .leftJoin(secrets, eq(environments.id, secrets.environmentId))
+    .where(eq(projects.userId, user.id))
+    .groupBy(projects.id)
+    .orderBy(desc(projects.updatedAt));
+  return (
+    <div>
+      <div className="mb-8 flex justify-between">
+        <div>
+          <p className="text-sm text-muted-foreground">Workspace</p>
+          <h1 className="mt-1 text-2xl font-semibold">Projects</h1>
+        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus />
+              New Project
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create project</DialogTitle>
+              <DialogDescription>
+                Organize secrets in isolated environments.
+              </DialogDescription>
+            </DialogHeader>
+            <form action={createProject} className="space-y-4">
+              <div>
+                <Label>Name</Label>
+                <Input name="name" placeholder="SQLVault" required />
+              </div>
+              <div>
+                <Label>Slug</Label>
+                <Input name="slug" placeholder="sqlvault" required />
+              </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea name="description" />
+              </div>
+              <Button className="w-full">Create project</Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
+      {rows.length ? (
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {rows.map((p) => (
+            <Link key={p.id} href={`/dashboard/projects/${p.id}`}>
+              <Card className="h-full hover:border-primary/30">
+                <CardContent className="p-5">
+                  <div className="flex justify-between">
+                    <FolderKanban className="size-5" />
+                    <ArrowRight className="size-4" />
+                  </div>
+                  <h2 className="mt-5 font-medium">{p.name}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {p.description || "No description"}
+                  </p>
+                  <p className="mt-5 border-t pt-4 font-mono text-xs text-muted-foreground">
+                    {p.environments} envs · {p.secrets} secrets
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <Card>
+          <CardContent className="py-20 text-center">
+            <p className="font-medium">No projects yet</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Create your first project to start managing secrets.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}

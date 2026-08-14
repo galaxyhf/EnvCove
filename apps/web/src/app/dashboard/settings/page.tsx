@@ -1,6 +1,64 @@
 import { requireUser } from "@/lib/authorization";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-export default async function Page() { const user = await requireUser(); return <div><div className="mb-8"><p className="text-sm text-muted-foreground">Account</p><h1 className="text-2xl font-semibold">Settings</h1></div><Tabs defaultValue="profile"><TabsList><TabsTrigger value="profile">Profile</TabsTrigger><TabsTrigger value="security">Security</TabsTrigger><TabsTrigger value="sessions">Sessions</TabsTrigger></TabsList><TabsContent value="profile"><Card><CardHeader><CardTitle>Profile</CardTitle><CardDescription>Your audit identity.</CardDescription></CardHeader><CardContent className="max-w-lg space-y-4"><Label>Name</Label><Input defaultValue={user.name ?? ""} disabled /><Label>Email</Label><Input defaultValue={user.email ?? ""} disabled /></CardContent></Card></TabsContent><TabsContent value="security"><Card><CardHeader><CardTitle>Security</CardTitle><CardDescription>Passwords use bcrypt and production sessions use secure HttpOnly cookies.</CardDescription></CardHeader></Card></TabsContent><TabsContent value="sessions"><Card><CardHeader><CardTitle>Sessions</CardTitle></CardHeader><CardContent><p className="text-sm">Current browser · Active now</p></CardContent></Card></TabsContent></Tabs></div>; }
+export default async function Page() {
+  const user = await requireUser();
+  return (
+    <div>
+      <div className="mb-8">
+        <p className="text-sm text-muted-foreground">Account</p>
+        <h1 className="text-2xl font-semibold">Settings</h1>
+      </div>
+      <Tabs defaultValue="profile">
+        <TabsList>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="security">Security</TabsTrigger>
+          <TabsTrigger value="sessions">Sessions</TabsTrigger>
+        </TabsList>
+        <TabsContent value="profile">
+          <Card>
+            <CardHeader>
+              <CardTitle>Profile</CardTitle>
+              <CardDescription>Your audit identity.</CardDescription>
+            </CardHeader>
+            <CardContent className="max-w-lg space-y-4">
+              <Label>Name</Label>
+              <Input defaultValue={user.name ?? ""} disabled />
+              <Label>Email</Label>
+              <Input defaultValue={user.email ?? ""} disabled />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="security">
+          <Card>
+            <CardHeader>
+              <CardTitle>Security</CardTitle>
+              <CardDescription>
+                Passwords use bcrypt and production sessions use secure HttpOnly
+                cookies.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </TabsContent>
+        <TabsContent value="sessions">
+          <Card>
+            <CardHeader>
+              <CardTitle>Sessions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm">Current browser · Active now</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

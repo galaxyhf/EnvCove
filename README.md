@@ -240,17 +240,17 @@ http://localhost:3000
 
 Rotas principais:
 
-| Rota | Finalidade |
-| --- | --- |
-| `/` | Landing page |
-| `/login` | Login |
-| `/register` | Criação de conta |
-| `/dashboard` | Visão geral |
-| `/dashboard/projects` | Projetos e ambientes |
-| `/dashboard/activity` | Auditoria |
-| `/dashboard/cli-tokens` | Tokens da CLI |
-| `/dashboard/settings` | Configurações da conta |
-| `/docs` | Documentação de uso |
+| Rota                    | Finalidade             |
+| ----------------------- | ---------------------- |
+| `/`                     | Landing page           |
+| `/login`                | Login                  |
+| `/register`             | Criação de conta       |
+| `/dashboard`            | Visão geral            |
+| `/dashboard/projects`   | Projetos e ambientes   |
+| `/dashboard/activity`   | Auditoria              |
+| `/dashboard/cli-tokens` | Tokens da CLI          |
+| `/dashboard/settings`   | Configurações da conta |
+| `/docs`                 | Documentação de uso    |
 
 ## Primeiro uso do dashboard
 
@@ -412,17 +412,17 @@ envvault run pnpm test
 
 ## Referência da CLI
 
-| Comando | Descrição |
-| --- | --- |
-| `envvault login` | Autentica usando um token do dashboard |
-| `envvault logout` | Remove as credenciais locais |
-| `envvault init` | Conecta o diretório atual a um projeto e ambiente |
-| `envvault pull` | Gera o arquivo de variáveis configurado |
-| `envvault run <comando>` | Executa um processo com secrets em memória |
-| `envvault whoami` | Exibe o usuário e o token autenticados |
-| `envvault projects` | Lista os projetos disponíveis |
-| `envvault environments` | Lista os ambientes do projeto atual |
-| `envvault environments <slug>` | Lista os ambientes de um projeto específico |
+| Comando                        | Descrição                                         |
+| ------------------------------ | ------------------------------------------------- |
+| `envvault login`               | Autentica usando um token do dashboard            |
+| `envvault logout`              | Remove as credenciais locais                      |
+| `envvault init`                | Conecta o diretório atual a um projeto e ambiente |
+| `envvault pull`                | Gera o arquivo de variáveis configurado           |
+| `envvault run <comando>`       | Executa um processo com secrets em memória        |
+| `envvault whoami`              | Exibe o usuário e o token autenticados            |
+| `envvault projects`            | Lista os projetos disponíveis                     |
+| `envvault environments`        | Lista os ambientes do projeto atual               |
+| `envvault environments <slug>` | Lista os ambientes de um projeto específico       |
 
 ## Endpoints utilizados pela CLI
 
@@ -447,15 +447,15 @@ Os endpoints validam o proprietário do projeto antes de retornar informações.
 
 Execute os comandos na raiz do monorepo:
 
-| Comando | Função |
-| --- | --- |
-| `pnpm dev` | Inicia o Next.js em desenvolvimento |
-| `pnpm build` | Compila todos os pacotes e aplicações |
-| `pnpm lint` | Executa as validações estáticas |
-| `pnpm typecheck` | Verifica os tipos TypeScript |
-| `pnpm db:generate` | Gera uma migration após mudança no schema |
-| `pnpm db:migrate` | Aplica migrations ao banco configurado |
-| `pnpm --filter envvault build` | Compila somente a CLI |
+| Comando                        | Função                                    |
+| ------------------------------ | ----------------------------------------- |
+| `pnpm dev`                     | Inicia o Next.js em desenvolvimento       |
+| `pnpm build`                   | Compila todos os pacotes e aplicações     |
+| `pnpm lint`                    | Executa as validações estáticas           |
+| `pnpm typecheck`               | Verifica os tipos TypeScript              |
+| `pnpm db:generate`             | Gera uma migration após mudança no schema |
+| `pnpm db:migrate`              | Aplica migrations ao banco configurado    |
+| `pnpm --filter envvault build` | Compila somente a CLI                     |
 
 Para iniciar o build web compilado:
 

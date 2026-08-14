@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "description": "Official CLI for EnvVault",
   "type": "module",
-  "bin": { "envvault": "dist/index.js" },
-  "files": ["dist"],
+  "bin": {
+    "envvault": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
     "dev": "tsx src/index.ts",
@@ -23,5 +27,7 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

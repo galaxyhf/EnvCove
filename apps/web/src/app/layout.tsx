@@ -14,17 +14,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: "EnvVault — Secrets, under control", template: "%s · EnvVault" },
-  description: "Centralize, encrypt and load environment variables from the terminal.",
+  title: {
+    default: "EnvVault — Secrets, under control",
+    template: "%s · EnvVault",
+  },
+  description:
+    "Centralize, encrypt and load environment variables from the terminal.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full bg-background text-foreground"><TooltipProvider>{children}</TooltipProvider></body>
+      <body className="min-h-full bg-background text-foreground">
+        <TooltipProvider>{children}</TooltipProvider>
+      </body>
     </html>
   );
 }

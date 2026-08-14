@@ -1,2 +1,4 @@
 import { AuthShell } from "@/components/auth-shell";
-export default function Page() { return <AuthShell mode="register" />; }
+export default function Page() {
+  return <AuthShell mode="register" />;
+}
