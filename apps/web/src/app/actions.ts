@@ -24,22 +24,60 @@ import {
   requireUser,
 } from "@/lib/authorization";
 
+function slugify(value: string) {
+  return (
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 64) || "project"
+  );
+}
+
 export async function createProject(formData: FormData) {
   const user = await requireUser();
   const input = projectSchema.parse(Object.fromEntries(formData));
   const db = getDb();
+  const baseSlug = slugify(input.name);
+  let slug = baseSlug;
+  let suffix = 2;
+
+  while (
+    (
+      await db
+        .select({ id: projects.id })
+        .from(projects)
+        .where(and(eq(projects.userId, user.id), eq(projects.slug, slug)))
+        .limit(1)
+    ).length
+  ) {
+    const suffixText = `-${suffix}`;
+    slug = `${baseSlug.slice(0, 64 - suffixText.length)}${suffixText}`;
+    suffix += 1;
+  }
+
   const [project] = await db
     .insert(projects)
-    .values({ userId: user.id, ...input })
+    .values({ userId: user.id, slug, ...input })
     .returning();
   await db
     .insert(environments)
-    .values({
-      projectId: project.id,
-      name: "Desenvolvimento",
-      slug: "development",
-      description: "Desenvolvimento local",
-    });
+    .values([
+      {
+        projectId: project.id,
+        name: "Desenvolvimento",
+        slug: "development",
+        description: "Ambiente de desenvolvimento",
+      },
+      {
+        projectId: project.id,
+        name: "Produção",
+        slug: "production",
+        description: "Ambiente de produção",
+      },
+    ]);
   await audit({
     userId: user.id,
     projectId: project.id,
@@ -54,9 +92,33 @@ export async function createEnvironment(projectId: string, formData: FormData) {
   const user = await requireUser();
   if (!(await ownedProject(projectId, user.id))) throw new Error("NOT_FOUND");
   const input = environmentSchema.parse(Object.fromEntries(formData));
-  const [environment] = await getDb()
+  const db = getDb();
+  const baseSlug = slugify(input.name);
+  let slug = baseSlug;
+  let suffix = 2;
+
+  while (
+    (
+      await db
+        .select({ id: environments.id })
+        .from(environments)
+        .where(
+          and(
+            eq(environments.projectId, projectId),
+            eq(environments.slug, slug),
+          ),
+        )
+        .limit(1)
+    ).length
+  ) {
+    const suffixText = `-${suffix}`;
+    slug = `${baseSlug.slice(0, 64 - suffixText.length)}${suffixText}`;
+    suffix += 1;
+  }
+
+  const [environment] = await db
     .insert(environments)
-    .values({ projectId, ...input })
+    .values({ projectId, slug, ...input })
     .returning();
   await audit({
     userId: user.id,
@@ -66,6 +128,23 @@ export async function createEnvironment(projectId: string, formData: FormData) {
     metadata: { name: environment.name },
   });
   revalidatePath(`/dashboard/projects/${projectId}`);
+}
+
+export async function deleteProject(projectId: string) {
+  const user = await requireUser();
+  const project = await ownedProject(projectId, user.id);
+  if (!project) throw new Error("NOT_FOUND");
+
+  await getDb()
+    .delete(projects)
+    .where(and(eq(projects.id, projectId), eq(projects.userId, user.id)));
+  await audit({
+    userId: user.id,
+    action: "project.deleted",
+    metadata: { name: project.name },
+  });
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/projects");
 }
 
 export async function saveSecret(environmentId: string, formData: FormData) {
@@ -157,8 +236,18 @@ export async function restoreSecretVersion(versionId: string) {
 }
 
 export async function importSecrets(environmentId: string, formData: FormData) {
-  const content = String(formData.get("content") ?? "");
+  const file = formData.get("file");
+  if (
+    !(file instanceof File) ||
+    !file.name.startsWith(".env") ||
+    file.size === 0 ||
+    file.size > 1024 * 1024
+  ) {
+    throw new Error("INVALID_ENV_FILE");
+  }
+  const content = await file.text();
   const variables = parseEnv(content);
+  if (!variables.length) throw new Error("EMPTY_ENV_FILE");
   for (const variable of variables) {
     const data = new FormData();
     data.set("key", variable.key);

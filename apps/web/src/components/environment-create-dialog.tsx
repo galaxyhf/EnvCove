@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { LoaderCircle, Plus } from "lucide-react";
-import { createProject } from "@/app/actions";
+import { createEnvironment } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,9 +14,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 
-export function ProjectCreateDialog() {
+export function EnvironmentCreateDialog({ projectId }: { projectId: string }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
@@ -30,10 +29,10 @@ export function ProjectCreateDialog() {
     startTransition(async () => {
       setError("");
       try {
-        await createProject(formData);
+        await createEnvironment(projectId, formData);
         setOpen(false);
       } catch {
-        setError("Não foi possível criar o projeto. Verifique os dados.");
+        setError("Não foi possível criar o ambiente. Verifique os dados.");
       }
     });
   }
@@ -43,32 +42,27 @@ export function ProjectCreateDialog() {
       <DialogTrigger asChild>
         <Button>
           <Plus />
-          Novo projeto
+          Novo ambiente
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Criar projeto</DialogTitle>
+          <DialogTitle>Criar ambiente</DialogTitle>
           <DialogDescription>
-            Organize variáveis em ambientes isolados.
+            Isole um novo conjunto de variáveis.
           </DialogDescription>
         </DialogHeader>
         <form action={submit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="project-name">
+            <Label htmlFor="environment-name">
               Nome <span className="text-destructive" aria-hidden="true">*</span>
               <span className="sr-only"> (obrigatório)</span>
             </Label>
-            <Input
-              id="project-name"
-              name="name"
-              placeholder="SQLVault"
-              required
-            />
+            <Input id="environment-name" name="name" required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="project-description">Descrição</Label>
-            <Textarea id="project-description" name="description" />
+            <Label htmlFor="environment-description">Descrição</Label>
+            <Input id="environment-description" name="description" />
           </div>
           {error ? (
             <p className="text-sm text-destructive" role="alert">
@@ -77,7 +71,7 @@ export function ProjectCreateDialog() {
           ) : null}
           <Button className="w-full" disabled={pending}>
             {pending ? <LoaderCircle className="animate-spin" /> : null}
-            {pending ? "Criando..." : "Criar projeto"}
+            {pending ? "Criando..." : "Criar"}
           </Button>
         </form>
       </DialogContent>

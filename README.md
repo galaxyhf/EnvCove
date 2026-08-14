@@ -300,7 +300,7 @@ Para disponibilizar o comando globalmente durante o desenvolvimento:
 
 ```bash
 cd apps/cli
-pnpm link --global
+pnpm add --global .
 cd ../..
 ```
 

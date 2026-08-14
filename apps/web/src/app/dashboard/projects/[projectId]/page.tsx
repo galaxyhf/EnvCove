@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Download, GitCompareArrows, Plus, Search, Upload } from "lucide-react";
+import { Download, GitCompareArrows, Search } from "lucide-react";
 import {
   and,
   desc,
@@ -11,10 +11,13 @@ import {
   secrets,
   secretVersions,
 } from "@envvault/db";
-import { createEnvironment, importSecrets, saveSecret } from "@/app/actions";
 import { requireUser } from "@/lib/authorization";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { EnvironmentCreateDialog } from "@/components/environment-create-dialog";
+import { EnvironmentImportDialog } from "@/components/environment-import-dialog";
+import { ProjectDeleteDialog } from "@/components/resource-delete-dialogs";
+import { SecretCreateDialog } from "@/components/secret-create-dialog";
 import {
   Dialog,
   DialogContent,
@@ -24,8 +27,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { SecretListItem, SecretRow } from "@/components/secret-row";
 export const dynamic = "force-dynamic";
 export default async function Page({
@@ -109,7 +110,7 @@ export default async function Page({
               {project.description || project.slug}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline">
@@ -157,60 +158,11 @@ export default async function Page({
                 </div>
               </DialogContent>
             </Dialog>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus />
-                  Novo ambiente
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Criar ambiente</DialogTitle>
-                  <DialogDescription>
-                    Isole um novo conjunto de variáveis.
-                  </DialogDescription>
-                </DialogHeader>
-                <form
-                  action={createEnvironment.bind(null, projectId)}
-                  className="space-y-4"
-                >
-                  <div className="space-y-2">
-                    <Label htmlFor="environment-name">Nome</Label>
-                    <Input id="environment-name" name="name" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="environment-slug">
-                      Identificador (slug)
-                    </Label>
-                    <Input
-                      id="environment-slug"
-                      name="slug"
-                      placeholder="producao"
-                      pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-                      title="Use apenas letras minúsculas, números e hífens."
-                      aria-describedby="environment-slug-help"
-                      required
-                    />
-                    <p
-                      id="environment-slug-help"
-                      className="text-xs leading-relaxed text-muted-foreground"
-                    >
-                      Nome curto usado em URLs e comandos, sem espaços. Exemplo:
-                      homologacao.
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="environment-description">Descrição</Label>
-                    <Input
-                      id="environment-description"
-                      name="description"
-                    />
-                  </div>
-                  <Button className="w-full">Criar</Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <EnvironmentCreateDialog projectId={projectId} />
+            <ProjectDeleteDialog
+              projectId={projectId}
+              projectName={project.name}
+            />
           </div>
         </div>
       </div>
@@ -248,75 +200,8 @@ export default async function Page({
                     Exportar
                   </a>
                 </Button>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Upload />
-                      Importar
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Importar .env</DialogTitle>
-                      <DialogDescription>
-                        Chaves existentes recebem uma nova versão.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form
-                      action={importSecrets.bind(null, selected.id)}
-                      className="space-y-4"
-                    >
-                      <Textarea
-                        name="content"
-                        className="min-h-64 font-mono"
-                        required
-                      />
-                      <Button className="w-full">Importar</Button>
-                    </form>
-                  </DialogContent>
-                </Dialog>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button size="sm">
-                      <Plus />
-                      Adicionar variável
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Adicionar variável</DialogTitle>
-                      <DialogDescription>
-                        Criptografada antes de ser armazenada.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form
-                      action={saveSecret.bind(null, selected.id)}
-                      className="space-y-4"
-                    >
-                      <div className="space-y-2">
-                        <Label htmlFor="secret-key">Chave</Label>
-                        <Input id="secret-key" name="key" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="secret-value">Valor</Label>
-                        <Input
-                          id="secret-value"
-                          name="value"
-                          type="password"
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="secret-description">Descrição</Label>
-                        <Input
-                          id="secret-description"
-                          name="description"
-                        />
-                      </div>
-                      <Button className="w-full">Criptografar e salvar</Button>
-                    </form>
-                  </DialogContent>
-                </Dialog>
+                <EnvironmentImportDialog environmentId={selected.id} />
+                <SecretCreateDialog environmentId={selected.id} />
               </div>
             </div>
             {list.length ? (

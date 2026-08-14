@@ -108,7 +108,13 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
             ) : (
               <form action={create} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="token-name">Nome</Label>
+                  <Label htmlFor="token-name">
+                    Nome{" "}
+                    <span className="text-destructive" aria-hidden="true">
+                      *
+                    </span>
+                    <span className="sr-only"> (obrigatório)</span>
+                  </Label>
                   <Input
                     id="token-name"
                     name="name"

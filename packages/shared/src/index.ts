@@ -2,20 +2,10 @@ import { z } from "zod";
 
 export const projectSchema = z.object({
   name: z.string().trim().min(2).max(80),
-  slug: z
-    .string()
-    .trim()
-    .min(2)
-    .max(64)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   description: z.string().trim().max(240).optional().default(""),
 });
 
-export const environmentSchema = projectSchema.pick({
-  name: true,
-  slug: true,
-  description: true,
-});
+export const environmentSchema = projectSchema;
 
 export const secretSchema = z.object({
   key: z

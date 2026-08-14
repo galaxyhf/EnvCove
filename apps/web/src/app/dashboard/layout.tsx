@@ -10,7 +10,7 @@ export default async function Layout({
   if (!session?.user) redirect("/login");
   return (
     <div className="min-h-screen">
-      <DashboardNav email={session.user.email} />
+      <DashboardNav name={session.user.name} />
       <main className="md:pl-60">
         <div className="mx-auto max-w-7xl p-5 sm:p-8">{children}</div>
       </main>

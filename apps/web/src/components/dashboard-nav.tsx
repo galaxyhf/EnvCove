@@ -31,7 +31,7 @@ const links = [
   ["/dashboard/settings", "Configurações", Settings],
   ["/docs", "Documentação", BookOpen],
 ] as const;
-function Nav({ email }: { email?: string | null }) {
+function Nav({ name }: { name?: string | null }) {
   const path = usePathname();
   return (
     <div className="flex h-full flex-col">
@@ -58,7 +58,7 @@ function Nav({ email }: { email?: string | null }) {
       </nav>
       <div className="border-t p-3">
         <p className="truncate px-3 py-2 text-xs text-muted-foreground">
-          {email}
+          {name || "Usuário"}
         </p>
         <Button
           variant="ghost"
@@ -72,11 +72,11 @@ function Nav({ email }: { email?: string | null }) {
     </div>
   );
 }
-export function DashboardNav({ email }: { email?: string | null }) {
+export function DashboardNav({ name }: { name?: string | null }) {
   return (
     <>
       <aside className="fixed inset-y-0 left-0 hidden w-60 border-r bg-background/95 md:block">
-        <Nav email={email} />
+        <Nav name={name} />
       </aside>
       <div className="sticky top-0 z-20 flex h-14 items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:hidden">
         <Link
@@ -97,7 +97,7 @@ export function DashboardNav({ email }: { email?: string | null }) {
               <SheetTitle>Menu</SheetTitle>
               <SheetDescription>Navegação</SheetDescription>
             </SheetHeader>
-            <Nav email={email} />
+            <Nav name={name} />
           </SheetContent>
         </Sheet>
       </div>
