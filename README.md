@@ -510,8 +510,8 @@ pnpm --filter @envvault/web exec next build --webpack
 
 1. Envie o monorepo para um repositório Git.
 2. Importe o repositório na Vercel.
-3. Selecione `apps/web` como aplicação do monorepo.
-4. Confirme que a Vercel detectou o workspace pnpm.
+3. Defina `apps/web` como **Root Directory** do projeto.
+4. Mantenha os comandos automáticos de instalação e build. O pnpm usará o `pnpm-workspace.yaml` da raiz do repositório para incluir a aplicação e os pacotes internos.
 5. Cadastre `DATABASE_URL`, `AUTH_SECRET`, `ENVVAULT_MASTER_KEY` e `NEXT_PUBLIC_APP_URL`.
 6. Use a connection string pooled do Neon.
 7. Aplique as migrations ao banco de produção.
@@ -521,6 +521,10 @@ pnpm --filter @envvault/web exec next build --webpack
 A Vercel fornece HTTPS automaticamente para os domínios publicados.
 
 ## Erros comuns
+
+### `ERR_PNPM_WORKSPACE_PKG_NOT_FOUND`
+
+Esse erro ocorre quando a instalação não encontra pacotes internos como `@envvault/crypto`. O monorepo deve ter apenas o `pnpm-workspace.yaml` da raiz; não crie outro arquivo de workspace dentro de `apps/web`.
 
 ### `DATABASE_URL is not configured`
 
