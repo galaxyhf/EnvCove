@@ -24,12 +24,12 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 const links = [
-  ["/dashboard", "Overview", Gauge],
-  ["/dashboard/projects", "Projects", FolderKanban],
-  ["/dashboard/activity", "Activity", Activity],
-  ["/dashboard/cli-tokens", "CLI Tokens", TerminalSquare],
-  ["/dashboard/settings", "Settings", Settings],
-  ["/docs", "Documentation", BookOpen],
+  ["/dashboard", "Visão geral", Gauge],
+  ["/dashboard/projects", "Projetos", FolderKanban],
+  ["/dashboard/activity", "Atividade", Activity],
+  ["/dashboard/cli-tokens", "Tokens da CLI", TerminalSquare],
+  ["/dashboard/settings", "Configurações", Settings],
+  ["/docs", "Documentação", BookOpen],
 ] as const;
 function Nav({ email }: { email?: string | null }) {
   const path = usePathname();
@@ -66,7 +66,7 @@ function Nav({ email }: { email?: string | null }) {
           onClick={() => signOut({ callbackUrl: "/" })}
         >
           <LogOut />
-          Logout
+          Sair
         </Button>
       </div>
     </div>

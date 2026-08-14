@@ -100,7 +100,7 @@ export default async function Page({
           href="/dashboard/projects"
           className="text-xs text-muted-foreground"
         >
-          Projects /
+          Projetos /
         </Link>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -114,21 +114,21 @@ export default async function Page({
               <DialogTrigger asChild>
                 <Button variant="outline">
                   <GitCompareArrows />
-                  Compare
+                  Comparar
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-2xl">
                 <DialogHeader>
-                  <DialogTitle>Compare environments</DialogTitle>
+                  <DialogTitle>Comparar ambientes</DialogTitle>
                   <DialogDescription>
-                    Key presence only. Values stay hidden.
+                    Apenas a presença das chaves. Os valores continuam ocultos.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="overflow-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b">
-                        <th className="py-3 text-left">Key</th>
+                        <th className="py-3 text-left">Chave</th>
                         {envs.map((e) => (
                           <th key={e.id} className="px-3">
                             {e.name}
@@ -161,27 +161,53 @@ export default async function Page({
               <DialogTrigger asChild>
                 <Button>
                   <Plus />
-                  New environment
+                  Novo ambiente
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Create environment</DialogTitle>
+                  <DialogTitle>Criar ambiente</DialogTitle>
                   <DialogDescription>
-                    Isolate a new set of secrets.
+                    Isole um novo conjunto de variáveis.
                   </DialogDescription>
                 </DialogHeader>
                 <form
                   action={createEnvironment.bind(null, projectId)}
                   className="space-y-4"
                 >
-                  <Label>Name</Label>
-                  <Input name="name" required />
-                  <Label>Slug</Label>
-                  <Input name="slug" required />
-                  <Label>Description</Label>
-                  <Input name="description" />
-                  <Button className="w-full">Create</Button>
+                  <div className="space-y-2">
+                    <Label htmlFor="environment-name">Nome</Label>
+                    <Input id="environment-name" name="name" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="environment-slug">
+                      Identificador (slug)
+                    </Label>
+                    <Input
+                      id="environment-slug"
+                      name="slug"
+                      placeholder="producao"
+                      pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+                      title="Use apenas letras minúsculas, números e hífens."
+                      aria-describedby="environment-slug-help"
+                      required
+                    />
+                    <p
+                      id="environment-slug-help"
+                      className="text-xs leading-relaxed text-muted-foreground"
+                    >
+                      Nome curto usado em URLs e comandos, sem espaços. Exemplo:
+                      homologacao.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="environment-description">Descrição</Label>
+                    <Input
+                      id="environment-description"
+                      name="description"
+                    />
+                  </div>
+                  <Button className="w-full">Criar</Button>
                 </form>
               </DialogContent>
             </Dialog>
@@ -209,7 +235,7 @@ export default async function Page({
                   name="q"
                   defaultValue={query.q}
                   className="pl-9"
-                  placeholder="Search keys"
+                  placeholder="Buscar chaves"
                 />
                 <input type="hidden" name="env" value={selected.id} />
               </form>
@@ -219,21 +245,21 @@ export default async function Page({
                     href={`/api/environments/${selected.id}/export?filename=.env.local`}
                   >
                     <Download />
-                    Export
+                    Exportar
                   </a>
                 </Button>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline" size="sm">
                       <Upload />
-                      Import
+                      Importar
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Import .env</DialogTitle>
+                      <DialogTitle>Importar .env</DialogTitle>
                       <DialogDescription>
-                        Existing keys create a new version.
+                        Chaves existentes recebem uma nova versão.
                       </DialogDescription>
                     </DialogHeader>
                     <form
@@ -245,7 +271,7 @@ export default async function Page({
                         className="min-h-64 font-mono"
                         required
                       />
-                      <Button className="w-full">Import</Button>
+                      <Button className="w-full">Importar</Button>
                     </form>
                   </DialogContent>
                 </Dialog>
@@ -253,27 +279,41 @@ export default async function Page({
                   <DialogTrigger asChild>
                     <Button size="sm">
                       <Plus />
-                      Add variable
+                      Adicionar variável
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Add variable</DialogTitle>
+                      <DialogTitle>Adicionar variável</DialogTitle>
                       <DialogDescription>
-                        Encrypted before storage.
+                        Criptografada antes de ser armazenada.
                       </DialogDescription>
                     </DialogHeader>
                     <form
                       action={saveSecret.bind(null, selected.id)}
                       className="space-y-4"
                     >
-                      <Label>Key</Label>
-                      <Input name="key" required />
-                      <Label>Value</Label>
-                      <Input name="value" type="password" required />
-                      <Label>Description</Label>
-                      <Input name="description" />
-                      <Button className="w-full">Encrypt and save</Button>
+                      <div className="space-y-2">
+                        <Label htmlFor="secret-key">Chave</Label>
+                        <Input id="secret-key" name="key" required />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="secret-value">Valor</Label>
+                        <Input
+                          id="secret-value"
+                          name="value"
+                          type="password"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="secret-description">Descrição</Label>
+                        <Input
+                          id="secret-description"
+                          name="description"
+                        />
+                      </div>
+                      <Button className="w-full">Criptografar e salvar</Button>
                     </form>
                   </DialogContent>
                 </Dialog>
@@ -285,7 +325,7 @@ export default async function Page({
               ))
             ) : (
               <p className="py-20 text-center text-sm text-muted-foreground">
-                No variables found.
+                Nenhuma variável encontrada.
               </p>
             )}
           </CardContent>
@@ -293,7 +333,7 @@ export default async function Page({
       ) : (
         <Card>
           <CardContent className="py-20 text-center">
-            No environments yet.
+            Nenhum ambiente ainda.
           </CardContent>
         </Card>
       )}

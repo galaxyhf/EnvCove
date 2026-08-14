@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "EnvVault — Secrets, under control",
+    default: "EnvVault — Variáveis sob controle",
     template: "%s · EnvVault",
   },
   description:
-    "Centralize, encrypt and load environment variables from the terminal.",
+    "Centralize, criptografe e carregue variáveis de ambiente pelo terminal.",
 };
 
 export default function RootLayout({

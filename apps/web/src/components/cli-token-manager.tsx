@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Check, Copy, Plus, TerminalSquare, Trash2 } from "lucide-react";
+import { Copy, Plus, TerminalSquare, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,18 +22,38 @@ type Token = {
 };
 export function CliTokenManager({ tokens }: { tokens: Token[] }) {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
   const [created, setCreated] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen);
+    if (nextOpen) {
+      setCreated(null);
+      setError("");
+    }
+  }
   async function create(fd: FormData) {
-    const r = await fetch("/api/cli-tokens", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ name: fd.get("name") }),
-    });
-    const data = await r.json();
-    if (r.ok) {
+    setPending(true);
+    setError("");
+    try {
+      const r = await fetch("/api/cli-tokens", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: fd.get("name") }),
+      });
+      const data = await r.json();
+      if (!r.ok) {
+        setError("Não foi possível criar o token. Verifique o nome.");
+        return;
+      }
       setCreated(data.token);
       router.refresh();
+    } catch {
+      setError("Não foi possível criar o token. Tente novamente.");
+    } finally {
+      setPending(false);
     }
   }
   async function revoke(id: string) {
@@ -48,25 +68,25 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
     <div>
       <div className="mb-8 flex justify-between">
         <div>
-          <p className="text-sm text-muted-foreground">Access</p>
-          <h1 className="text-2xl font-semibold">CLI Tokens</h1>
+          <p className="text-sm text-muted-foreground">Acesso</p>
+          <h1 className="text-2xl font-semibold">Tokens da CLI</h1>
         </div>
-        <Dialog onOpenChange={(open) => !open && setCreated(null)}>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
           <DialogTrigger asChild>
             <Button>
               <Plus />
-              New token
+              Novo token
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {created ? "Copy your token" : "Create CLI token"}
+                {created ? "Copie seu token" : "Criar token da CLI"}
               </DialogTitle>
               <DialogDescription>
                 {created
-                  ? "Shown once. Store it securely."
-                  : "Identify the device or pipeline."}
+                  ? "Ele será exibido uma única vez. Guarde-o com segurança."
+                  : "Identifique o dispositivo ou pipeline."}
               </DialogDescription>
             </DialogHeader>
             {created ? (
@@ -75,21 +95,35 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
                   {created}
                 </code>
                 <Button
-                  size="icon-sm"
-                  variant="ghost"
+                  size="sm"
                   onClick={async () => {
                     await navigator.clipboard.writeText(created);
-                    setCopied(true);
+                    setOpen(false);
                   }}
                 >
-                  {copied ? <Check /> : <Copy />}
+                  <Copy />
+                  Copiar e fechar
                 </Button>
               </div>
             ) : (
               <form action={create} className="space-y-4">
-                <Label>Name</Label>
-                <Input name="name" placeholder="Personal Laptop" required />
-                <Button className="w-full">Generate</Button>
+                <div className="space-y-2">
+                  <Label htmlFor="token-name">Nome</Label>
+                  <Input
+                    id="token-name"
+                    name="name"
+                    placeholder="Notebook pessoal"
+                    required
+                  />
+                </div>
+                {error ? (
+                  <p className="text-sm text-destructive" role="alert">
+                    {error}
+                  </p>
+                ) : null}
+                <Button className="w-full" disabled={pending}>
+                  {pending ? "Gerando..." : "Gerar"}
+                </Button>
               </form>
             )}
           </DialogContent>
@@ -114,9 +148,9 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
               <div className="flex items-center gap-3 text-xs text-muted-foreground">
                 <span>
                   {t.lastUsedAt
-                    ? "Used " +
+                    ? "Usado em " +
                       new Date(t.lastUsedAt).toLocaleDateString("pt-BR")
-                    : "Never used"}
+                    : "Nunca usado"}
                 </span>
                 <Button
                   size="icon-sm"
@@ -130,7 +164,7 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
           ))
         ) : (
           <p className="py-20 text-center text-sm text-muted-foreground">
-            No CLI tokens.
+            Nenhum token da CLI.
           </p>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { auditLogs, desc, eq, getDb } from "@envvault/db";
 import { requireUser } from "@/lib/authorization";
 import { Card, CardContent } from "@/components/ui/card";
+import { getAuditActionLabel } from "@/lib/audit-label";
 export const dynamic = "force-dynamic";
 export default async function Page() {
   const user = await requireUser();
@@ -13,8 +14,8 @@ export default async function Page() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm text-muted-foreground">Security trail</p>
-        <h1 className="text-2xl font-semibold">Activity</h1>
+        <p className="text-sm text-muted-foreground">Registro de segurança</p>
+        <h1 className="text-2xl font-semibold">Atividade</h1>
       </div>
       <Card>
         <CardContent className="p-0">
@@ -26,10 +27,11 @@ export default async function Page() {
               >
                 <div>
                   <p className="text-sm font-medium">
-                    {x.action.replaceAll(".", " ")}
+                    {getAuditActionLabel(x.action)}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {Object.values(x.metadata).join(" / ") || "Workspace"}
+                    {Object.values(x.metadata).join(" / ") ||
+                      "Espaço de trabalho"}
                   </p>
                 </div>
                 <time className="text-xs text-muted-foreground">
@@ -39,7 +41,7 @@ export default async function Page() {
             ))
           ) : (
             <p className="py-20 text-center text-sm text-muted-foreground">
-              No activity recorded.
+              Nenhuma atividade registrada.
             </p>
           )}
         </CardContent>

@@ -10,6 +10,7 @@ import {
 } from "@envvault/db";
 import { requireUser } from "@/lib/authorization";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAuditActionLabel } from "@/lib/audit-label";
 export const dynamic = "force-dynamic";
 export default async function Page() {
   const user = await requireUser();
@@ -36,16 +37,16 @@ export default async function Page() {
     .orderBy(desc(auditLogs.createdAt))
     .limit(6);
   const stats = [
-    ["Projects", projectRows.length, FolderKanban],
-    ["Secrets", secretRows.length, Braces],
-    ["Environments", envRows.length, Layers3],
-    ["Recent changes", activity.length, Activity],
+    ["Projetos", projectRows.length, FolderKanban],
+    ["Variáveis", secretRows.length, Braces],
+    ["Ambientes", envRows.length, Layers3],
+    ["Alterações recentes", activity.length, Activity],
   ] as const;
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm text-muted-foreground">Workspace</p>
-        <h1 className="mt-1 text-2xl font-semibold">Overview</h1>
+        <p className="text-sm text-muted-foreground">Espaço de trabalho</p>
+        <h1 className="mt-1 text-2xl font-semibold">Visão geral</h1>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map(([label, value, Icon]) => (
@@ -64,7 +65,7 @@ export default async function Page() {
       </div>
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle className="text-base">Latest activity</CardTitle>
+          <CardTitle className="text-base">Atividade recente</CardTitle>
         </CardHeader>
         <CardContent>
           {activity.length ? (
@@ -75,10 +76,11 @@ export default async function Page() {
               >
                 <div>
                   <p className="text-sm font-medium">
-                    {item.action.replaceAll(".", " ")}
+                    {getAuditActionLabel(item.action)}
                   </p>
                   <p className="mt-1 font-mono text-xs text-muted-foreground">
-                    {Object.values(item.metadata).join(" · ") || "Workspace"}
+                    {Object.values(item.metadata).join(" · ") ||
+                      "Espaço de trabalho"}
                   </p>
                 </div>
                 <time className="text-xs text-muted-foreground">
@@ -88,7 +90,7 @@ export default async function Page() {
             ))
           ) : (
             <p className="py-12 text-center text-sm text-muted-foreground">
-              No activity yet.
+              Nenhuma atividade ainda.
             </p>
           )}
         </CardContent>

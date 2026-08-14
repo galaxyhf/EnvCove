@@ -14,36 +14,48 @@ export default async function Page() {
   return (
     <div>
       <div className="mb-8">
-        <p className="text-sm text-muted-foreground">Account</p>
-        <h1 className="text-2xl font-semibold">Settings</h1>
+        <p className="text-sm text-muted-foreground">Conta</p>
+        <h1 className="text-2xl font-semibold">Configurações</h1>
       </div>
       <Tabs defaultValue="profile">
         <TabsList>
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="sessions">Sessions</TabsTrigger>
+          <TabsTrigger value="profile">Perfil</TabsTrigger>
+          <TabsTrigger value="security">Segurança</TabsTrigger>
+          <TabsTrigger value="sessions">Sessões</TabsTrigger>
         </TabsList>
         <TabsContent value="profile">
           <Card>
             <CardHeader>
-              <CardTitle>Profile</CardTitle>
-              <CardDescription>Your audit identity.</CardDescription>
+              <CardTitle>Perfil</CardTitle>
+              <CardDescription>Sua identidade nos registros.</CardDescription>
             </CardHeader>
             <CardContent className="max-w-lg space-y-4">
-              <Label>Name</Label>
-              <Input defaultValue={user.name ?? ""} disabled />
-              <Label>Email</Label>
-              <Input defaultValue={user.email ?? ""} disabled />
+              <div className="space-y-2">
+                <Label htmlFor="profile-name">Nome</Label>
+                <Input
+                  id="profile-name"
+                  defaultValue={user.name ?? ""}
+                  disabled
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="profile-email">Email</Label>
+                <Input
+                  id="profile-email"
+                  defaultValue={user.email ?? ""}
+                  disabled
+                />
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="security">
           <Card>
             <CardHeader>
-              <CardTitle>Security</CardTitle>
+              <CardTitle>Segurança</CardTitle>
               <CardDescription>
-                Passwords use bcrypt and production sessions use secure HttpOnly
-                cookies.
+                As senhas usam bcrypt e as sessões de produção usam cookies
+                seguros e HttpOnly.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -51,10 +63,10 @@ export default async function Page() {
         <TabsContent value="sessions">
           <Card>
             <CardHeader>
-              <CardTitle>Sessions</CardTitle>
+              <CardTitle>Sessões</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">Current browser · Active now</p>
+              <p className="text-sm">Navegador atual · Ativo agora</p>
             </CardContent>
           </Card>
         </TabsContent>

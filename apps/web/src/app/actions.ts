@@ -36,9 +36,9 @@ export async function createProject(formData: FormData) {
     .insert(environments)
     .values({
       projectId: project.id,
-      name: "Development",
+      name: "Desenvolvimento",
       slug: "development",
-      description: "Local development",
+      description: "Desenvolvimento local",
     });
   await audit({
     userId: user.id,
@@ -163,7 +163,7 @@ export async function importSecrets(environmentId: string, formData: FormData) {
     const data = new FormData();
     data.set("key", variable.key);
     data.set("value", variable.value);
-    data.set("description", "Imported from .env");
+    data.set("description", "Importada do .env");
     await saveSecret(environmentId, data);
   }
 }

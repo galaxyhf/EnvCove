@@ -122,6 +122,34 @@
   * {
     @apply border-border outline-ring/50;
   }
+  a[href]:not([aria-disabled="true"]),
+  button:not(:disabled),
+  label[for],
+  summary,
+  input[type="button"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  input[type="reset"]:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="file"]:not(:disabled),
+  select:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="link"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  [aria-disabled="true"],
+  [data-disabled] {
+    cursor: not-allowed;
+  }
+  label[for]:has(+ input:disabled),
+  label[for]:has(+ textarea:disabled),
+  label[for]:has(+ select:disabled) {
+    cursor: not-allowed;
+  }
   body {
     @apply bg-background text-foreground;
     background-image: radial-gradient(

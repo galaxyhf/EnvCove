@@ -67,7 +67,7 @@ export function SecretRow({
       <div>
         <p className="font-mono text-sm font-medium">{secret.key}</p>
         <p className="truncate text-xs text-muted-foreground">
-          {secret.description || "No description"}
+          {secret.description || "Sem descrição"}
         </p>
       </div>
       <code className="truncate rounded-md bg-muted/60 px-3 py-2 text-xs">
@@ -91,9 +91,9 @@ export function SecretRow({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit {secret.key}</DialogTitle>
+              <DialogTitle>Editar {secret.key}</DialogTitle>
               <DialogDescription>
-                The current value stays protected. Saving creates a version.
+                O valor atual permanece protegido. Salvar cria uma nova versão.
               </DialogDescription>
             </DialogHeader>
             <form
@@ -106,9 +106,16 @@ export function SecretRow({
                 name="description"
                 value={secret.description}
               />
-              <Label>New value</Label>
-              <Input name="value" type="password" required />
-              <Button className="w-full">Save new version</Button>
+              <div className="space-y-2">
+                <Label htmlFor={`secret-value-${secret.id}`}>Novo valor</Label>
+                <Input
+                  id={`secret-value-${secret.id}`}
+                  name="value"
+                  type="password"
+                  required
+                />
+              </div>
+              <Button className="w-full">Salvar nova versão</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -120,9 +127,9 @@ export function SecretRow({
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{secret.key} history</DialogTitle>
+              <DialogTitle>Histórico de {secret.key}</DialogTitle>
               <DialogDescription>
-                Encrypted versions retained for audit and recovery.
+                Versões criptografadas mantidas para auditoria e recuperação.
               </DialogDescription>
             </DialogHeader>
             {secret.versions.map((date, i) => (
@@ -130,7 +137,7 @@ export function SecretRow({
                 key={date + i}
                 className="flex justify-between border-b py-3 text-sm"
               >
-                <span>Version {secret.versions.length - i}</span>
+                <span>Versão {secret.versions.length - i}</span>
                 <time className="text-muted-foreground">
                   {new Date(date).toLocaleString("pt-BR")}
                 </time>
