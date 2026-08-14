@@ -24,6 +24,7 @@ type Project = {
 type Environment = { id: string; name: string; slug: string };
 type VaultConfig = { projectId: string; environment: string; output: string };
 
+const DEFAULT_API_URL = "http://localhost:3000";
 const configDir = join(homedir(), ".envvault");
 const configPath = join(configDir, "config.json");
 const vaultPath = resolve(".envvault.json");
@@ -112,8 +113,8 @@ program
   .description("Authenticate with a CLI token")
   .option(
     "--url <url>",
-    "EnvVault URL",
-    process.env.ENVVAULT_URL ?? "http://localhost:3000",
+    "Override the default EnvVault URL",
+    process.env.ENVVAULT_URL ?? DEFAULT_API_URL,
   )
   .action(async ({ url }) => {
     try {

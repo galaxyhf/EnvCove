@@ -325,16 +325,21 @@ No dashboard, acesse **CLI Tokens**, crie um token e copie-o. Ele será exibido 
 
 ### 2. Fazer login
 
-Para desenvolvimento local:
+Faça login informando o token criado no dashboard:
 
 ```bash
-envvault login --url http://localhost:3000
+envvault login
 ```
 
-Para uma instalação publicada:
+O endereço padrão do servidor fica embutido na CLI. Durante o desenvolvimento,
+ele é `http://localhost:3000`. Antes de publicar a CLI para produção, altere
+`DEFAULT_API_URL` em `apps/cli/src/index.ts` para a URL oficial do EnvVault.
+
+O parâmetro `--url` continua disponível somente para desenvolvimento, testes ou
+uma instalação alternativa:
 
 ```bash
-envvault login --url https://envvault.seudominio.com
+envvault login --url http://localhost:3001
 ```
 
 O token fica salvo em:
@@ -538,7 +543,7 @@ A chave fornecida não representa exatamente 32 bytes. Gere outra usando o coman
 O token pode estar incorreto, expirado ou revogado. Crie outro token no dashboard e execute novamente:
 
 ```bash
-envvault login --url http://localhost:3000
+envvault login
 ```
 
 ### `.envvault.json not found`
