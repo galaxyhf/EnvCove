@@ -1,0 +1,4 @@
+import { authenticateCli } from "@/lib/cli-auth";
+import { environments, eq, getDb } from "@envvault/db";
+import { ownedProject } from "@/lib/authorization";
+export async function GET(request: Request, { params }: { params: Promise<{ projectId: string }> }) { const identity = await authenticateCli(request); if (!identity) return Response.json({ error: "Unauthorized" }, { status: 401 }); const { projectId } = await params; if (!(await ownedProject(projectId, identity.user.id))) return Response.json({ error: "Project not found" }, { status: 404 }); const rows = await getDb().select({ id: environments.id, name: environments.name, slug: environments.slug }).from(environments).where(eq(environments.projectId, projectId)).orderBy(environments.name); return Response.json({ environments: rows }); }

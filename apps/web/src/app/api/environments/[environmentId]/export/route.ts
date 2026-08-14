@@ -1,0 +1,6 @@
+import { decryptSecret } from "@envvault/crypto";
+import { eq, getDb, secrets } from "@envvault/db";
+import { serializeEnv } from "@envvault/shared";
+import { audit } from "@/lib/audit";
+import { ownedEnvironment, requireUser } from "@/lib/authorization";
+export async function GET(request: Request, { params }: { params: Promise<{ environmentId: string }> }) { try { const user = await requireUser(); const { environmentId } = await params; const ownership = await ownedEnvironment(environmentId, user.id); if (!ownership) return Response.json({ error: "Not found" }, { status: 404 }); const rows = await getDb().select().from(secrets).where(eq(secrets.environmentId, environmentId)).orderBy(secrets.key); await audit({ userId: user.id, projectId: ownership.project.id, environmentId, action: "secrets.exported", metadata: { count: String(rows.length) } }); const filename = new URL(request.url).searchParams.get("filename") ?? ".env"; return new Response(serializeEnv(rows.map((row) => ({ key: row.key, value: decryptSecret(row) }))), { headers: { "content-type": "text/plain; charset=utf-8", "content-disposition": `attachment; filename="${filename.replace(/[^.a-zA-Z0-9_-]/g, "") || ".env"}"`, "cache-control": "no-store" } }); } catch { return Response.json({ error: "Unauthorized" }, { status: 401 }); } }

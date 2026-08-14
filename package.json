@@ -1,0 +1,17 @@
+{
+  "name": "envvault",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.0.4",
+  "scripts": {
+    "dev": "pnpm --filter @envvault/web dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --filter @envvault/db generate",
+    "db:migrate": "pnpm --filter @envvault/db migrate"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

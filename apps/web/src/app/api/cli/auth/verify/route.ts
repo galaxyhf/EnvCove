@@ -1,0 +1,3 @@
+import { authenticateCli } from "@/lib/cli-auth";
+import { rateLimit } from "@/lib/rate-limit";
+export async function POST(request: Request) { const key = request.headers.get("x-forwarded-for") ?? "unknown"; if (!rateLimit(`cli-auth:${key}`, 10, 60_000)) return Response.json({ error: "Too many attempts" }, { status: 429 }); const result = await authenticateCli(request); if (!result) return Response.json({ error: "Your CLI token is invalid, expired, or revoked." }, { status: 401 }); return Response.json({ user: { id: result.user.id, name: result.user.name, email: result.user.email }, token: { id: result.token.id, name: result.token.name } }); }
