@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
   Activity,
-  BookOpen,
   FolderKanban,
   Gauge,
   KeyRound,
@@ -29,7 +28,6 @@ const links = [
   ["/dashboard/activity", "Atividade", Activity],
   ["/dashboard/cli-tokens", "Tokens da CLI", TerminalSquare],
   ["/dashboard/settings", "Configurações", Settings],
-  ["/docs", "Documentação", BookOpen],
 ] as const;
 function Nav({ name }: { name?: string | null }) {
   const path = usePathname();

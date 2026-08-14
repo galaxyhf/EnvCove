@@ -74,16 +74,13 @@ export default async function Page({
             <KeyRound className="size-4 text-primary" />
             EnvVault Docs
           </Link>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex items-center text-sm">
             <Link
               href={alternateHref}
               hrefLang={language === "pt" ? "en" : "pt-BR"}
               className="rounded-md border px-3 py-1.5 text-muted-foreground hover:text-foreground"
             >
               {text.alternateLanguage}
-            </Link>
-            <Link href="/dashboard" className="text-muted-foreground">
-              Dashboard
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Download, GitCompareArrows, Search } from "lucide-react";
+import { GitCompareArrows } from "lucide-react";
 import {
   and,
   desc,
@@ -15,8 +15,10 @@ import { requireUser } from "@/lib/authorization";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { EnvironmentCreateDialog } from "@/components/environment-create-dialog";
+import { EnvironmentExportDialog } from "@/components/environment-export-dialog";
 import { EnvironmentImportDialog } from "@/components/environment-import-dialog";
 import { ProjectDeleteDialog } from "@/components/resource-delete-dialogs";
+import { ProjectSecretSearch } from "@/components/project-secret-search";
 import { SecretCreateDialog } from "@/components/secret-create-dialog";
 import {
   Dialog,
@@ -26,15 +28,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { SecretListItem, SecretRow } from "@/components/secret-row";
+import { SecretListItem } from "@/components/secret-row";
 export const dynamic = "force-dynamic";
 export default async function Page({
   params,
   searchParams,
 }: {
   params: Promise<{ projectId: string }>;
-  searchParams: Promise<{ env?: string; q?: string }>;
+  searchParams: Promise<{ env?: string }>;
 }) {
   const user = await requireUser();
   const { projectId } = await params;
@@ -71,14 +72,7 @@ export default async function Page({
         .where(eq(secrets.environmentId, selected.id))
         .orderBy(desc(secretVersions.createdAt))
     : [];
-  const q = query.q?.toLowerCase() ?? "";
   const list: SecretListItem[] = secretRows
-    .filter(
-      (s) =>
-        !q ||
-        s.key.toLowerCase().includes(q) ||
-        s.description.toLowerCase().includes(q),
-    )
     .map((s) => ({
       id: s.id,
       key: s.key,
@@ -180,39 +174,17 @@ export default async function Page({
       {selected ? (
         <Card>
           <CardContent className="p-0">
-            <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:justify-between">
-              <form className="relative max-w-sm flex-1">
-                <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
-                <Input
-                  name="q"
-                  defaultValue={query.q}
-                  className="pl-9"
-                  placeholder="Buscar chaves"
-                />
-                <input type="hidden" name="env" value={selected.id} />
-              </form>
+            <ProjectSecretSearch
+              key={selected.id}
+              secrets={list}
+              environmentId={selected.id}
+            >
               <div className="flex gap-2">
-                <Button asChild variant="outline" size="sm">
-                  <a
-                    href={`/api/environments/${selected.id}/export?filename=.env.local`}
-                  >
-                    <Download />
-                    Exportar
-                  </a>
-                </Button>
+                <EnvironmentExportDialog environmentId={selected.id} />
                 <EnvironmentImportDialog environmentId={selected.id} />
                 <SecretCreateDialog environmentId={selected.id} />
               </div>
-            </div>
-            {list.length ? (
-              list.map((s) => (
-                <SecretRow key={s.id} secret={s} environmentId={selected.id} />
-              ))
-            ) : (
-              <p className="py-20 text-center text-sm text-muted-foreground">
-                Nenhuma variável encontrada.
-              </p>
-            )}
+            </ProjectSecretSearch>
           </CardContent>
         </Card>
       ) : (
