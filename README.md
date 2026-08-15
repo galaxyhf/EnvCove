@@ -314,7 +314,7 @@ envvault --help
 Quando o pacote estiver publicado no npm, a instalação poderá ser feita com:
 
 ```bash
-npm install -g envvault
+npm install -g @galaxyhf/envvault
 ```
 
 ## Fluxo completo da CLI

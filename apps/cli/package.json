@@ -1,5 +1,5 @@
 {
-  "name": "envvault",
+  "name": "@galaxyhf/envvault",
   "version": "0.1.0",
   "description": "Official CLI for EnvVault",
   "license": "MIT",

@@ -13,7 +13,7 @@ Use a CLI para gerar arquivos `.env` ou executar processos com os secrets direta
 ## Instalação
 
 ```bash
-npm install --global envvault
+npm install --global @galaxyhf/envvault
 ```
 
 Confirme a instalação:
@@ -122,7 +122,7 @@ Não compartilhe nem versione esse arquivo.
 Reinstale o pacote e abra um novo terminal:
 
 ```bash
-npm install --global envvault
+npm install --global @galaxyhf/envvault
 ```
 
 ### `Unauthorized`
@@ -145,7 +145,7 @@ envvault init
 ## Atualização
 
 ```bash
-npm install --global envvault@latest
+npm install --global @galaxyhf/envvault@latest
 ```
 
 ## Licença

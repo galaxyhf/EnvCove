@@ -95,7 +95,7 @@ export default async function Page({
         </p>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.gettingStarted}</h2>
-          <Code>{`npm install -g envvault\nenvvault login\ncd meu-projeto\nenvvault init\nenvvault pull\nnpm run dev`}</Code>
+          <Code>{`npm install -g @galaxyhf/envvault\nenvvault login\ncd meu-projeto\nenvvault init\nenvvault pull\nnpm run dev`}</Code>
         </section>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.login}</h2>
