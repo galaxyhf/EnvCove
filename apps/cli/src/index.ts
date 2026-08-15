@@ -24,7 +24,7 @@ type Project = {
 type Environment = { id: string; name: string; slug: string };
 type VaultConfig = { projectId: string; environment: string; output: string };
 
-const DEFAULT_API_URL = "http://localhost:3000";
+const DEFAULT_API_URL = "https://env-vault-web.vercel.app";
 const configDir = join(homedir(), ".envvault");
 const configPath = join(configDir, "config.json");
 const vaultPath = resolve(".envvault.json");

@@ -173,7 +173,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 Em produção, use a URL HTTPS real:
 
 ```env
-NEXT_PUBLIC_APP_URL=https://envvault.seudominio.com
+NEXT_PUBLIC_APP_URL=https://env-vault-web.vercel.app
 ```
 
 ## Arquivos de ambiente para desenvolvimento
@@ -331,9 +331,8 @@ Faça login informando o token criado no dashboard:
 envvault login
 ```
 
-O endereço padrão do servidor fica embutido na CLI. Durante o desenvolvimento,
-ele é `http://localhost:3000`. Antes de publicar a CLI para produção, altere
-`DEFAULT_API_URL` em `apps/cli/src/index.ts` para a URL oficial do EnvVault.
+O endereço padrão do servidor fica embutido na CLI e aponta para
+`https://env-vault-web.vercel.app`.
 
 O parâmetro `--url` continua disponível somente para desenvolvimento, testes ou
 uma instalação alternativa:
@@ -516,7 +515,7 @@ pnpm --filter @envvault/web exec next build --webpack
 6. Use a connection string pooled do Neon.
 7. Aplique as migrations ao banco de produção.
 8. Faça o deploy.
-9. Atualize `NEXT_PUBLIC_APP_URL` com o domínio HTTPS definitivo.
+9. Defina `NEXT_PUBLIC_APP_URL=https://env-vault-web.vercel.app` no ambiente de produção.
 
 A Vercel fornece HTTPS automaticamente para os domínios publicados.
 
