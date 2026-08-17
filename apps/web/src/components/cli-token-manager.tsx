@@ -2,6 +2,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Copy, Plus, TerminalSquare, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,6 +36,9 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
   const [created, setCreated] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [tokenToRevoke, setTokenToRevoke] = useState<Token | null>(null);
+  const [revokeError, setRevokeError] = useState("");
+  const [revokePending, setRevokePending] = useState(false);
 
   function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen);
@@ -56,13 +69,30 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
       setPending(false);
     }
   }
-  async function revoke(id: string) {
-    await fetch("/api/cli-tokens", {
-      method: "DELETE",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    router.refresh();
+  async function revoke() {
+    if (!tokenToRevoke) return;
+
+    setRevokePending(true);
+    setRevokeError("");
+    try {
+      const response = await fetch("/api/cli-tokens", {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id: tokenToRevoke.id }),
+      });
+
+      if (!response.ok) {
+        setRevokeError("Não foi possível excluir o token. Tente novamente.");
+        return;
+      }
+
+      setTokenToRevoke(null);
+      router.refresh();
+    } catch {
+      setRevokeError("Não foi possível excluir o token. Tente novamente.");
+    } finally {
+      setRevokePending(false);
+    }
   }
   return (
     <div>
@@ -161,7 +191,11 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
                 <Button
                   size="icon-sm"
                   variant="ghost"
-                  onClick={() => revoke(t.id)}
+                  aria-label={`Excluir token ${t.name}`}
+                  onClick={() => {
+                    setRevokeError("");
+                    setTokenToRevoke(t);
+                  }}
                 >
                   <Trash2 />
                 </Button>
@@ -174,6 +208,44 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
           </p>
         )}
       </div>
+      <AlertDialog
+        open={Boolean(tokenToRevoke)}
+        onOpenChange={(nextOpen) => {
+          if (!nextOpen && !revokePending) setTokenToRevoke(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Excluir token {tokenToRevoke?.name}?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Este token perderá imediatamente o acesso à CLI. Esta ação não
+              pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {revokeError ? (
+            <p className="text-sm text-destructive" role="alert">
+              {revokeError}
+            </p>
+          ) : null}
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={revokePending}>
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={revokePending}
+              onClick={(event) => {
+                event.preventDefault();
+                void revoke();
+              }}
+            >
+              {revokePending ? "Excluindo..." : "Excluir token"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
