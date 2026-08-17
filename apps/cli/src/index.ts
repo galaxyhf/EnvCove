@@ -25,7 +25,7 @@ type Project = {
 type Environment = { id: string; name: string; slug: string };
 type ProjectConfig = { projectId: string; environment: string; output: string };
 
-const DEFAULT_API_URL = "https://env-cove-web.vercel.app";
+const DEFAULT_API_URL = "https://envcove.vercel.app";
 const configDir = join(homedir(), ".envcove");
 const configPath = join(configDir, "config.json");
 const projectConfigPath = resolve(".envcove.json");
@@ -51,9 +51,29 @@ async function authConfig(): Promise<Config> {
   return config;
 }
 
+async function readApiResponse<T>(response: Response, url: string): Promise<T> {
+  const body = await response.text();
+  let data: T & { error?: string };
+
+  try {
+    data = JSON.parse(body) as T & { error?: string };
+  } catch {
+    const detail = body.trim().split(/\r?\n/, 1)[0];
+    throw new Error(
+      `EnvCove API returned a non-JSON response (${response.status})${detail ? `: ${detail}` : ""}\nCheck the server URL: ${url}`,
+    );
+  }
+
+  if (!response.ok)
+    throw new Error(data.error ?? `Request failed (${response.status})`);
+
+  return data;
+}
+
 async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const config = await authConfig();
-  const response = await fetch(`${config.apiUrl.replace(/\/$/, "")}${path}`, {
+  const url = `${config.apiUrl.replace(/\/$/, "")}${path}`;
+  const response = await fetch(url, {
     ...init,
     headers: {
       "content-type": "application/json",
@@ -61,10 +81,7 @@ async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
       ...init.headers,
     },
   });
-  const body = (await response.json().catch(() => ({}))) as { error?: string };
-  if (!response.ok)
-    throw new Error(body.error ?? `Request failed (${response.status})`);
-  return body as T;
+  return readApiResponse<T>(response, url);
 }
 
 function printError(error: unknown) {
@@ -118,23 +135,25 @@ program
     process.env.ENVCOVE_URL ?? DEFAULT_API_URL,
   )
   .action(async ({ url }) => {
+    let spinner: ReturnType<typeof ora> | undefined;
+
     try {
       const token = await password({
         message: "Enter your EnvCove token:",
         mask: "*",
       });
-      const spinner = ora("Authenticating").start();
+      spinner = ora("Authenticating").start();
+      const verifyUrl = `${url.replace(/\/$/, "")}/api/cli/auth/verify`;
       const response = await fetch(
-        `${url.replace(/\/$/, "")}/api/cli/auth/verify`,
+        verifyUrl,
         { method: "POST", headers: { authorization: `Bearer ${token}` } },
       );
-      const data = (await response.json()) as {
+      const data = await readApiResponse<{
         user?: { name: string; email: string };
         token?: { name: string };
         error?: string;
-      };
-      if (!response.ok || !data.user)
-        throw new Error(data.error ?? "Authentication failed");
+      }>(response, verifyUrl);
+      if (!data.user) throw new Error("Authentication failed");
       await saveConfig({
         token,
         apiUrl: url,
@@ -145,6 +164,7 @@ program
       spinner.succeed("Authentication successful");
       console.log(`Logged in as ${chalk.bold(data.user.email)}`);
     } catch (error) {
+      spinner?.stop();
       printError(error);
     }
   });

@@ -173,7 +173,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 Em produção, use a URL HTTPS real:
 
 ```env
-NEXT_PUBLIC_APP_URL=https://env-cove-web.vercel.app
+NEXT_PUBLIC_APP_URL=https://envcove.vercel.app
 ```
 
 ## Arquivos de ambiente para desenvolvimento
@@ -352,7 +352,7 @@ envcove login
 ```
 
 O endereço padrão do servidor fica embutido na CLI e aponta para
-`https://env-cove-web.vercel.app`.
+`https://envcove.vercel.app`.
 
 O parâmetro `--url` continua disponível somente para desenvolvimento, testes ou
 uma instalação alternativa:
@@ -536,7 +536,7 @@ pnpm --filter @envcove/web exec next build --webpack
 6. Use a connection string pooled do Neon.
 7. Aplique as migrations ao banco de produção.
 8. Faça o deploy.
-9. Defina `NEXT_PUBLIC_APP_URL=https://env-cove-web.vercel.app` no ambiente de produção.
+9. Defina `NEXT_PUBLIC_APP_URL=https://envcove.vercel.app` no ambiente de produção.
 
 A Vercel fornece HTTPS automaticamente para os domínios publicados.
 
