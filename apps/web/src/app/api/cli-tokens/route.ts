@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
-import { and, cliTokens, eq, getDb, isNull } from "@envvault/db";
+import { and, cliTokens, eq, getDb, isNull } from "@envcove/db";
 import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { requireUser } from "@/lib/authorization";
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
         { error: "Invalid token settings" },
         { status: 400 },
       );
-    const raw = `ev_live_${randomBytes(24).toString("base64url")}`;
+    const raw = `ec_live_${randomBytes(24).toString("base64url")}`;
     const tokenHash = createHash("sha256").update(raw).digest("hex");
     const [token] = await getDb()
       .insert(cliTokens)

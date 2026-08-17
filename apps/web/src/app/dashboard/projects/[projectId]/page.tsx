@@ -10,7 +10,7 @@ import {
   projects,
   secrets,
   secretVersions,
-} from "@envvault/db";
+} from "@envcove/db";
 import { requireUser } from "@/lib/authorization";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

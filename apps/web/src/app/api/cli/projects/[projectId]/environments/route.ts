@@ -1,5 +1,5 @@
 import { authenticateCli } from "@/lib/cli-auth";
-import { environments, eq, getDb } from "@envvault/db";
+import { environments, eq, getDb } from "@envcove/db";
 import { ownedProject } from "@/lib/authorization";
 export async function GET(
   request: Request,

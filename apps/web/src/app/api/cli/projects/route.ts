@@ -1,5 +1,5 @@
 import { authenticateCli } from "@/lib/cli-auth";
-import { count, environments, eq, getDb, projects } from "@envvault/db";
+import { count, environments, eq, getDb, projects } from "@envcove/db";
 export async function GET(request: Request) {
   const identity = await authenticateCli(request);
   if (!identity)

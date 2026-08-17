@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import { eq, getDb, users } from "@envvault/db";
+import { eq, getDb, users } from "@envcove/db";
 import { z } from "zod";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

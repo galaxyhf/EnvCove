@@ -1,15 +1,16 @@
 {
-  "name": "envvault",
+  "name": "envcove-monorepo",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@11.0.4",
   "scripts": {
-    "dev": "pnpm --filter @envvault/web dev",
+    "dev": "pnpm --filter @envcove/web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
-    "db:generate": "pnpm --filter @envvault/db generate",
-    "db:migrate": "pnpm --filter @envvault/db migrate"
+    "cli:pack": "pnpm --filter envcove exec npm pack --dry-run",
+    "db:generate": "pnpm --filter @envcove/db generate",
+    "db:migrate": "pnpm --filter @envcove/db migrate"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

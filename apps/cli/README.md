@@ -1,26 +1,26 @@
-# EnvVault CLI
+# EnvCove CLI
 
-CLI oficial do EnvVault para conectar projetos e carregar variáveis de ambiente pelo terminal.
+CLI oficial do EnvCove para conectar projetos e carregar variáveis de ambiente pelo terminal.
 
 Use a CLI para gerar arquivos `.env` ou executar processos com os secrets diretamente em memória.
 
 ## Requisitos
 
 - Node.js 20 ou superior
-- Uma conta no EnvVault
+- Uma conta no EnvCove
 - Um token criado em **Tokens da CLI** no dashboard
 
 ## Instalação
 
 ```bash
-npm install --global @galaxyhf/envvault
+npm install --global envcove
 ```
 
 Confirme a instalação:
 
 ```bash
-envvault --version
-envvault --help
+envcove --version
+envcove --help
 ```
 
 ## Início rápido
@@ -30,7 +30,7 @@ envvault --help
 Crie um token no dashboard e execute:
 
 ```bash
-envvault login
+envcove login
 ```
 
 O token completo aparece somente uma vez no dashboard e não é exibido enquanto você o informa no terminal.
@@ -40,29 +40,29 @@ O token completo aparece somente uma vez no dashboard e não é exibido enquanto
 Dentro do projeto que receberá as variáveis:
 
 ```bash
-envvault init
+envcove init
 ```
 
-Selecione o projeto, o ambiente e o arquivo de saída. A CLI criará um `.envvault.json` com essa configuração, sem armazenar secrets nele.
+Selecione o projeto, o ambiente e o arquivo de saída. A CLI criará um `.envcove.json` com essa configuração, sem armazenar secrets nele.
 
 ### 3. Baixe as variáveis
 
 ```bash
-envvault pull
+envcove pull
 ```
 
 Também é possível escolher o ambiente ou arquivo:
 
 ```bash
-envvault pull --env production
-envvault pull --output .env
-envvault pull --env staging --output .env.staging
+envcove pull --env production
+envcove pull --output .env
+envcove pull --env staging --output .env.staging
 ```
 
 Para sobrescrever um arquivo existente sem confirmação:
 
 ```bash
-envvault pull --force
+envcove pull --force
 ```
 
 Mantenha arquivos `.env*` com valores sensíveis fora do Git.
@@ -70,9 +70,9 @@ Mantenha arquivos `.env*` com valores sensíveis fora do Git.
 ### 4. Execute sem criar arquivo
 
 ```bash
-envvault run npm run dev
-envvault run node server.js
-envvault run pnpm test
+envcove run npm run dev
+envcove run node server.js
+envcove run pnpm test
 ```
 
 O processo recebe os valores por `process.env`, sem gerar um arquivo `.env`.
@@ -81,21 +81,21 @@ O processo recebe os valores por `process.env`, sem gerar um arquivo `.env`.
 
 | Comando | Descrição |
 | --- | --- |
-| `envvault login` | Autentica o terminal |
-| `envvault logout` | Remove as credenciais locais |
-| `envvault whoami` | Mostra o usuário autenticado |
-| `envvault projects` | Lista os projetos disponíveis |
-| `envvault environments` | Lista os ambientes do projeto conectado |
-| `envvault environments <slug>` | Lista os ambientes de outro projeto |
-| `envvault init` | Conecta o diretório atual a um projeto |
-| `envvault pull` | Gera o arquivo de variáveis configurado |
-| `envvault run <comando>` | Executa um processo com secrets em memória |
+| `envcove login` | Autentica o terminal |
+| `envcove logout` | Remove as credenciais locais |
+| `envcove whoami` | Mostra o usuário autenticado |
+| `envcove projects` | Lista os projetos disponíveis |
+| `envcove environments` | Lista os ambientes do projeto conectado |
+| `envcove environments <slug>` | Lista os ambientes de outro projeto |
+| `envcove init` | Conecta o diretório atual a um projeto |
+| `envcove pull` | Gera o arquivo de variáveis configurado |
+| `envcove run <comando>` | Executa um processo com secrets em memória |
 
 Consulte as opções de um comando com `--help`:
 
 ```bash
-envvault pull --help
-envvault run --help
+envcove pull --help
+envcove run --help
 ```
 
 ## Segurança
@@ -104,25 +104,25 @@ envvault run --help
 - Tokens da CLI são armazenados no servidor somente como hash.
 - Tokens podem expirar ou ser revogados pelo dashboard.
 - Arquivos gerados recebem permissões restritas quando possível.
-- `envvault run` evita gravar secrets em um arquivo local.
+- `envcove run` evita gravar secrets em um arquivo local.
 
 As credenciais da CLI ficam em:
 
 ```text
-Linux/macOS: ~/.envvault/config.json
-Windows:     %USERPROFILE%\.envvault\config.json
+Linux/macOS: ~/.envcove/config.json
+Windows:     %USERPROFILE%\.envcove\config.json
 ```
 
 Não compartilhe nem versione esse arquivo.
 
 ## Solução de problemas
 
-### `envvault: command not found`
+### `envcove: command not found`
 
 Reinstale o pacote e abra um novo terminal:
 
 ```bash
-npm install --global @galaxyhf/envvault
+npm install --global envcove
 ```
 
 ### `Unauthorized`
@@ -130,8 +130,8 @@ npm install --global @galaxyhf/envvault
 O token pode estar incorreto, expirado ou revogado. Crie outro token e autentique novamente:
 
 ```bash
-envvault logout
-envvault login
+envcove logout
+envcove login
 ```
 
 ### Projeto não conectado
@@ -139,13 +139,13 @@ envvault login
 Entre no diretório correto e execute:
 
 ```bash
-envvault init
+envcove init
 ```
 
 ## Atualização
 
 ```bash
-npm install --global @galaxyhf/envvault@latest
+npm install --global envcove@latest
 ```
 
 ## Licença

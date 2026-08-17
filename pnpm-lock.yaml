@@ -41,13 +41,13 @@ importers:
 
   apps/web:
     dependencies:
-      "@envvault/crypto":
+      "@envcove/crypto":
         specifier: workspace:*
         version: link:../../packages/crypto
-      "@envvault/db":
+      "@envcove/db":
         specifier: workspace:*
         version: link:../../packages/db
-      "@envvault/shared":
+      "@envcove/shared":
         specifier: workspace:*
         version: link:../../packages/shared
       bcryptjs:

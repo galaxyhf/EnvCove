@@ -1,6 +1,6 @@
-import { decryptSecret } from "@envvault/crypto";
-import { eq, getDb, secrets } from "@envvault/db";
-import { serializeEnv } from "@envvault/shared";
+import { decryptSecret } from "@envcove/crypto";
+import { eq, getDb, secrets } from "@envcove/db";
+import { serializeEnv } from "@envcove/shared";
 import { audit } from "@/lib/audit";
 import { ownedEnvironment, requireUser } from "@/lib/authorization";
 export async function GET(

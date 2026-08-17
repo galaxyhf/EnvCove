@@ -1,6 +1,6 @@
 "use server";
 
-import { encryptSecret } from "@envvault/crypto";
+import { encryptSecret } from "@envcove/crypto";
 import {
   and,
   environments,
@@ -9,13 +9,13 @@ import {
   projects,
   secrets,
   secretVersions,
-} from "@envvault/db";
+} from "@envcove/db";
 import {
   environmentSchema,
   parseEnv,
   projectSchema,
   secretSchema,
-} from "@envvault/shared";
+} from "@envcove/shared";
 import { revalidatePath } from "next/cache";
 import { audit } from "@/lib/audit";
 import {

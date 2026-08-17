@@ -1,4 +1,4 @@
-import { auditLogs, getDb } from "@envvault/db";
+import { auditLogs, getDb } from "@envcove/db";
 
 export async function audit(input: {
   userId: string;

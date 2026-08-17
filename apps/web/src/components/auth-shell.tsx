@@ -18,12 +18,12 @@ export function AuthShell({ mode }: { mode: "login" | "register" }) {
           className="mx-auto mb-8 flex w-fit items-center gap-2.5 font-semibold"
         >
           <KeyRound className="size-4 text-primary" />
-          EnvVault
+          EnvCove
         </Link>
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">
-              {login ? "Acesse seu vault" : "Crie seu vault"}
+              {login ? "Acesse sua conta" : "Crie sua conta"}
             </CardTitle>
             <CardDescription>
               {login

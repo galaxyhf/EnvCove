@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-17T17:58:35Z",
+  "title": "Design System: EnvCove",
+  "extensions": {
+    "colorMeta": {
+      "verde-integridade": {
+        "role": "primary",
+        "displayName": "Verde de Integridade",
+        "canonical": "oklch(0.78 0.14 155)",
+        "tonalRamp": ["oklch(0.15 0.03 155)", "oklch(0.25 0.06 155)", "oklch(0.38 0.09 155)", "oklch(0.52 0.12 155)", "oklch(0.65 0.14 155)", "oklch(0.78 0.14 155)", "oklch(0.87 0.09 155)", "oklch(0.95 0.035 155)"]
+      },
+      "tinta-do-verde": {
+        "role": "on-primary",
+        "displayName": "Tinta do Verde",
+        "canonical": "oklch(0.12 0.025 155)",
+        "tonalRamp": ["oklch(0.12 0.025 155)", "oklch(0.24 0.03 155)", "oklch(0.36 0.03 155)", "oklch(0.48 0.025 155)", "oklch(0.6 0.02 155)", "oklch(0.72 0.015 155)", "oklch(0.84 0.01 155)", "oklch(0.95 0.005 155)"]
+      },
+      "carvao-profundo": {
+        "role": "neutral",
+        "displayName": "Carvão Profundo",
+        "canonical": "oklch(0.105 0 0)",
+        "tonalRamp": ["oklch(0.105 0 0)", "oklch(0.2 0 0)", "oklch(0.32 0 0)", "oklch(0.44 0 0)", "oklch(0.56 0 0)", "oklch(0.68 0 0)", "oklch(0.82 0 0)", "oklch(0.95 0 0)"]
+      },
+      "grafite-superficie": {
+        "role": "neutral",
+        "displayName": "Grafite de Superfície",
+        "canonical": "oklch(0.145 0 0)",
+        "tonalRamp": ["oklch(0.145 0 0)", "oklch(0.24 0 0)", "oklch(0.36 0 0)", "oklch(0.48 0 0)", "oklch(0.6 0 0)", "oklch(0.72 0 0)", "oklch(0.84 0 0)", "oklch(0.95 0 0)"]
+      },
+      "grafite-popover": {
+        "role": "neutral",
+        "displayName": "Grafite de Popover",
+        "canonical": "oklch(0.16 0 0)",
+        "tonalRamp": ["oklch(0.16 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.5 0 0)", "oklch(0.62 0 0)", "oklch(0.74 0 0)", "oklch(0.86 0 0)", "oklch(0.95 0 0)"]
+      },
+      "grafite-controle": {
+        "role": "neutral",
+        "displayName": "Grafite de Controle",
+        "canonical": "oklch(0.269 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.269 0 0)", "oklch(0.38 0 0)", "oklch(0.5 0 0)", "oklch(0.62 0 0)", "oklch(0.74 0 0)", "oklch(0.86 0 0)", "oklch(0.95 0 0)"]
+      },
+      "branco-tecnico": {
+        "role": "on-neutral",
+        "displayName": "Branco Técnico",
+        "canonical": "oklch(0.985 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.27 0 0)", "oklch(0.39 0 0)", "oklch(0.51 0 0)", "oklch(0.63 0 0)", "oklch(0.75 0 0)", "oklch(0.87 0 0)", "oklch(0.985 0 0)"]
+      },
+      "texto-secundario": {
+        "role": "neutral",
+        "displayName": "Texto Secundário",
+        "canonical": "oklch(0.708 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.27 0 0)", "oklch(0.39 0 0)", "oklch(0.51 0 0)", "oklch(0.62 0 0)", "oklch(0.708 0 0)", "oklch(0.84 0 0)", "oklch(0.95 0 0)"]
+      },
+      "borda-sutil": {
+        "role": "outline",
+        "displayName": "Borda Sutil",
+        "canonical": "oklch(1 0 0 / 10%)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.27 0 0)", "oklch(0.39 0 0)", "oklch(0.51 0 0)", "oklch(0.63 0 0)", "oklch(0.75 0 0)", "oklch(0.87 0 0)", "oklch(0.95 0 0)"]
+      },
+      "entrada-sutil": {
+        "role": "outline",
+        "displayName": "Entrada Sutil",
+        "canonical": "oklch(1 0 0 / 15%)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.27 0 0)", "oklch(0.39 0 0)", "oklch(0.51 0 0)", "oklch(0.63 0 0)", "oklch(0.75 0 0)", "oklch(0.87 0 0)", "oklch(0.95 0 0)"]
+      },
+      "vermelho-critico": {
+        "role": "destructive",
+        "displayName": "Vermelho Crítico",
+        "canonical": "oklch(0.704 0.191 22.216)",
+        "tonalRamp": ["oklch(0.15 0.05 22.216)", "oklch(0.27 0.09 22.216)", "oklch(0.39 0.13 22.216)", "oklch(0.51 0.17 22.216)", "oklch(0.62 0.191 22.216)", "oklch(0.704 0.191 22.216)", "oklch(0.84 0.11 22.216)", "oklch(0.95 0.04 22.216)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero e títulos editoriais da superfície pública." },
+      "headline": { "displayName": "Headline", "purpose": "Títulos de seção pública e hierarquia alta." },
+      "title": { "displayName": "Title", "purpose": "Cards, diálogos e agrupamentos do produto." },
+      "body": { "displayName": "Body", "purpose": "Conteúdo principal e controles da interface." },
+      "label": { "displayName": "Label", "purpose": "Metadados e rótulos compactos." },
+      "mono": { "displayName": "Mono", "purpose": "Chaves, comandos, slugs e dados operacionais." }
+    },
+    "shadows": [
+      { "name": "nav-fixed", "value": "0 6px 8px oklch(0 0 0 / 0.18)", "purpose": "Separar a navegação pública quando ela sobrepõe o conteúdo." },
+      { "name": "overlay-medium", "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)", "purpose": "Menus e selects flutuantes." },
+      { "name": "overlay-high", "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", "purpose": "Sheets e submenus acima do layout." },
+      { "name": "terminal-focus", "value": "0 25px 50px -12px rgb(0 0 0 / 0.5)", "purpose": "Artefato terminal da landing, não cards do produto." }
+    ],
+    "motion": [
+      { "name": "ease-out-quint", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Hover, barras fixas e transições de estado." },
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Revelações da landing pública." },
+      { "name": "product-fast", "value": "100ms", "purpose": "Menus, diálogos e overlays pequenos." },
+      { "name": "product-standard", "value": "200ms", "purpose": "Sheets e mudanças de estado maiores." },
+      { "name": "landing-reveal", "value": "720ms", "purpose": "Revelações editoriais da landing com alternativa reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal compacta com verde operacional.",
+      "html": "<button class=\"ds-btn-primary\">Criar projeto</button>",
+      "css": ".ds-btn-primary { display:inline-flex; height:2rem; align-items:center; justify-content:center; border:1px solid transparent; border-radius:var(--radius-lg,0.625rem); background:var(--primary); color:var(--primary-foreground); padding:0 0.625rem; font:500 0.875rem/1.25 'Geist',system-ui,sans-serif; transition:background-color 150ms cubic-bezier(0.22,1,0.36,1),transform 150ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { background:color-mix(in oklch,var(--primary) 80%,transparent); } .ds-btn-primary:focus-visible { outline:none; border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 50%,transparent); } .ds-btn-primary:active { transform:translateY(1px); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Ação secundária com limite estrutural e baixo peso visual.",
+      "html": "<button class=\"ds-btn-outline\">Importar</button>",
+      "css": ".ds-btn-outline { display:inline-flex; height:2rem; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:var(--radius-lg,0.625rem); background:color-mix(in oklch,var(--input) 30%,transparent); color:var(--foreground); padding:0 0.625rem; font:500 0.875rem/1.25 'Geist',system-ui,sans-serif; transition:background-color 150ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-outline:hover { background:color-mix(in oklch,var(--input) 50%,transparent); } .ds-btn-outline:focus-visible { outline:none; border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 50%,transparent); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Ação de baixa ênfase que aparece no hover e no foco.",
+      "html": "<button class=\"ds-btn-ghost\">Cancelar</button>",
+      "css": ".ds-btn-ghost { display:inline-flex; height:2rem; align-items:center; justify-content:center; border:1px solid transparent; border-radius:var(--radius-lg,0.625rem); background:transparent; color:var(--foreground); padding:0 0.625rem; font:500 0.875rem/1.25 'Geist',system-ui,sans-serif; transition:background-color 150ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-ghost:hover { background:color-mix(in oklch,var(--muted) 50%,transparent); } .ds-btn-ghost:focus-visible { outline:none; border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 50%,transparent); }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo compacto com foco verde e estados explícitos.",
+      "html": "<input class=\"ds-input\" aria-label=\"Nome do projeto\" placeholder=\"Nome do projeto\">",
+      "css": ".ds-input { width:100%; height:2rem; border:1px solid var(--input); border-radius:var(--radius-lg,0.625rem); background:color-mix(in oklch,var(--input) 30%,transparent); color:var(--foreground); padding:0 0.625rem; font:400 0.875rem/1.5 'Geist',system-ui,sans-serif; transition:border-color 150ms cubic-bezier(0.22,1,0.36,1),box-shadow 150ms cubic-bezier(0.22,1,0.36,1); } .ds-input::placeholder { color:var(--muted-foreground); } .ds-input:focus-visible { outline:none; border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 50%,transparent); } .ds-input:disabled { opacity:.5; cursor:not-allowed; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Superfície persistente plana, definida por tom e ring.",
+      "html": "<article class=\"ds-card\"><h3>Production</h3><p>12 variáveis protegidas</p></article>",
+      "css": ".ds-card { display:flex; flex-direction:column; gap:.5rem; border-radius:var(--radius-xl,.875rem); background:var(--card); color:var(--card-foreground); padding:1rem; box-shadow:0 0 0 1px color-mix(in oklch,var(--foreground) 10%,transparent); font:400 .875rem/1.5 'Geist',system-ui,sans-serif; } .ds-card h3 { margin:0; font-size:1rem; line-height:1.375; font-weight:500; } .ds-card p { margin:0; color:var(--muted-foreground); } .ds-card:focus-within { box-shadow:0 0 0 1px var(--ring),0 0 0 3px color-mix(in oklch,var(--ring) 35%,transparent); }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Sinal curto de estado ou categoria afirmativa.",
+      "html": "<span class=\"ds-badge\">Ativo</span>",
+      "css": ".ds-badge { display:inline-flex; height:1.25rem; align-items:center; justify-content:center; border:1px solid transparent; border-radius:var(--radius-4xl,1.625rem); background:var(--primary); color:var(--primary-foreground); padding:.125rem .5rem; font:500 .75rem/1 'Geist',system-ui,sans-serif; } .ds-badge:hover { background:color-mix(in oklch,var(--primary) 80%,transparent); } .ds-badge:focus-visible { outline:none; border-color:var(--ring); box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 50%,transparent); }"
+    },
+    {
+      "name": "Active Navigation Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Estado ativo da sidebar com geometria estável.",
+      "html": "<a class=\"ds-nav-item\" href=\"#\" aria-current=\"page\">Projetos</a>",
+      "css": ".ds-nav-item { display:flex; height:2.25rem; align-items:center; border-radius:var(--radius-md,.5rem); background:var(--accent); color:var(--accent-foreground); padding:0 .75rem; text-decoration:none; font:400 .875rem/1.25 'Geist',system-ui,sans-serif; transition:background-color 150ms cubic-bezier(0.22,1,0.36,1),color 150ms cubic-bezier(0.22,1,0.36,1); } .ds-nav-item:hover { background:color-mix(in oklch,var(--accent) 85%,var(--foreground) 5%); color:var(--foreground); } .ds-nav-item:focus-visible { outline:none; box-shadow:0 0 0 3px color-mix(in oklch,var(--ring) 50%,transparent); }"
+    },
+    {
+      "name": "Tooltip",
+      "kind": "custom",
+      "refersTo": "tooltip",
+      "description": "Explicação invertida, compacta e de leitura imediata.",
+      "html": "<span class=\"ds-tooltip\" role=\"tooltip\">Copiar secret</span>",
+      "css": ".ds-tooltip { display:inline-flex; max-width:20rem; align-items:center; border-radius:var(--radius-sm,.375rem); background:var(--foreground); color:var(--background); padding:.375rem .75rem; font:400 .75rem/1.25 'Geist',system-ui,sans-serif; } .ds-tooltip:focus-visible { outline:2px solid var(--ring); outline-offset:2px; }"
+    },
+    {
+      "name": "Dialog Surface",
+      "kind": "custom",
+      "refersTo": "dialog",
+      "description": "Camada modal limitada à tarefa e separada por ring.",
+      "html": "<section class=\"ds-dialog\" role=\"dialog\" aria-labelledby=\"ds-dialog-title\"><h3 id=\"ds-dialog-title\">Criar ambiente</h3><p>Separe variáveis por contexto de execução.</p></section>",
+      "css": ".ds-dialog { display:grid; width:min(24rem,calc(100vw - 2rem)); gap:1rem; border-radius:var(--radius-xl,.875rem); background:var(--popover); color:var(--popover-foreground); padding:1rem; box-shadow:0 0 0 1px color-mix(in oklch,var(--foreground) 10%,transparent); font:400 .875rem/1.5 'Geist',system-ui,sans-serif; } .ds-dialog h3 { margin:0; font-size:1rem; line-height:1; font-weight:500; } .ds-dialog p { margin:0; color:var(--muted-foreground); } .ds-dialog:focus-visible { outline:none; box-shadow:0 0 0 1px var(--ring),0 0 0 3px color-mix(in oklch,var(--ring) 35%,transparent); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Sala de Controle Silenciosa",
+    "overview": "O EnvCove se comporta como uma sala de controle usada durante trabalho técnico real: escura para manter o foco, compacta para acelerar a leitura e pontuada por sinais verdes somente quando existe uma ação ou um estado que merece atenção. A identidade é precisa, confiável e discreta; segurança aparece na clareza dos estados e das consequências, não em decoração temática. O sistema favorece padrões conhecidos, densidade moderada e superfícies contidas. Dashboard e CLI pertencem à mesma linguagem: Geist organiza a interface, Geist Mono identifica chaves, comandos e metadados, e o verde conecta confirmação, seleção e ação primária. Nenhuma anti-referência visual específica foi definida no produto; novas decisões devem permanecer justificadas pelo fluxo, pela legibilidade e pelo contexto operacional.",
+    "keyCharacteristics": [
+      "Tema escuro acromático com um único sinal verde operacional.",
+      "Componentes compactos, familiares e previsíveis.",
+      "Bordas e camadas tonais antes de sombras.",
+      "Texto técnico direto, com mono reservado a dados operacionais.",
+      "Estados acessíveis conforme WCAG AA, inclusive por teclado."
+    ],
+    "rules": [
+      { "name": "The Sinal Raro Rule", "body": "O Verde de Integridade deve ocupar no máximo cerca de 10% de uma tela e aparecer apenas em ação primária, seleção, foco ou confirmação.", "section": "colors" },
+      { "name": "The Tipografia de Operação Rule", "body": "Geist conduz toda a interface; Geist Mono identifica dados técnicos e nunca substitui a fonte de leitura em parágrafos ou controles comuns.", "section": "typography" },
+      { "name": "The Plano em Repouso Rule", "body": "Superfícies persistentes não recebem sombra; profundidade vem de tom e borda, enquanto sombras ficam reservadas a sobreposição ou foco narrativo real.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** use o Verde de Integridade (`oklch(0.78 0.14 155)`) somente para ação primária, seleção, foco e confirmação.",
+      "**Do** use diferença tonal e Borda Sutil de `1px` para estruturar superfícies persistentes.",
+      "**Do** mantenha controles do dashboard compactos, com alturas de `2rem` a `2.25rem` e raios entre `0.5rem` e `0.875rem`.",
+      "**Do** reserve Geist Mono para chaves, comandos, slugs, caminhos e metadados operacionais.",
+      "**Do** garanta contraste WCAG AA, ordem de foco lógica, foco visível e estados compreensíveis sem depender apenas de cor.",
+      "**Do** respeite `prefers-reduced-motion`; transições do produto ficam entre `100ms` e `250ms`, e revelações longas pertencem apenas à landing."
+    ],
+    "donts": [
+      "**Don't** use o Verde de Integridade como preenchimento decorativo ou em mais de cerca de 10% da tela.",
+      "**Don't** aplique sombras em cards persistentes; use Grafite de Superfície e ring branco a 10%.",
+      "**Don't** use Geist Mono em parágrafos, botões comuns ou rótulos que não representam dados técnicos.",
+      "**Don't** use tracking de display abaixo de `-0.04em`; o `-0.055em` atual do hero é uma exceção legada a corrigir em um polish futuro.",
+      "**Don't** replique a grade decorativa ou a sequência de kickers pequenos em caixa alta da landing em novas superfícies.",
+      "**Don't** revele, registre ou comunique valores sensíveis fora de uma ação explícita e autorizada."
+    ]
+  }
+}

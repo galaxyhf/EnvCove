@@ -1,4 +1,4 @@
-import { auditLogs, desc, eq, getDb } from "@envvault/db";
+import { auditLogs, desc, eq, getDb } from "@envcove/db";
 import { requireUser } from "@/lib/authorization";
 import { Card, CardContent } from "@/components/ui/card";
 import { getAuditActionLabel } from "@/lib/audit-label";

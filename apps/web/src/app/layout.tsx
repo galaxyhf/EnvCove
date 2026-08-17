@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "EnvVault — Variáveis sob controle",
-    template: "%s · EnvVault",
+    default: "EnvCove — Variáveis sob controle",
+    template: "%s · EnvCove",
   },
   description:
     "Centralize, criptografe e carregue variáveis de ambiente pelo terminal.",

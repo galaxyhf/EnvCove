@@ -1,8 +1,10 @@
 {
-  "name": "@galaxyhf/envvault",
+  "name": "envcove",
   "version": "0.1.0",
-  "description": "Official CLI for EnvVault",
+  "description": "Official CLI for EnvCove",
   "license": "MIT",
+  "author": "Caio Silva",
+  "preferGlobal": true,
   "keywords": [
     "env",
     "environment-variables",
@@ -10,28 +12,31 @@
     "cli",
     "developer-tools"
   ],
-  "homepage": "https://github.com/galaxyhf/EnvVault#readme",
+  "homepage": "https://github.com/galaxyhf/EnvCove#readme",
   "bugs": {
-    "url": "https://github.com/galaxyhf/EnvVault/issues"
+    "url": "https://github.com/galaxyhf/EnvCove/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/galaxyhf/EnvVault.git",
+    "url": "git+https://github.com/galaxyhf/EnvCove.git",
     "directory": "apps/cli"
   },
   "type": "module",
   "bin": {
-    "envvault": "dist/index.js"
+    "envcove": "dist/index.js"
   },
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm --dts --clean",
     "dev": "tsx src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "tsc -p tsconfig.json --noEmit",
-    "prepublishOnly": "pnpm build"
+    "prepack": "pnpm typecheck && pnpm build"
   },
   "dependencies": {
     "@inquirer/prompts": "^8.0.1",

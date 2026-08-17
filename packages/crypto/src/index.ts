@@ -7,11 +7,11 @@ export type EncryptedSecret = {
 };
 
 function masterKey(): Buffer {
-  const encoded = process.env.ENVVAULT_MASTER_KEY;
-  if (!encoded) throw new Error("ENVVAULT_MASTER_KEY is not configured");
+  const encoded = process.env.ENVCOVE_MASTER_KEY;
+  if (!encoded) throw new Error("ENVCOVE_MASTER_KEY is not configured");
   const key = Buffer.from(encoded, "base64");
   if (key.length !== 32)
-    throw new Error("ENVVAULT_MASTER_KEY must be 32 bytes encoded as base64");
+    throw new Error("ENVCOVE_MASTER_KEY must be 32 bytes encoded as base64");
   return key;
 }
 

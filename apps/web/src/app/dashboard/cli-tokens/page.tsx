@@ -1,4 +1,4 @@
-import { cliTokens, desc, eq, getDb } from "@envvault/db";
+import { cliTokens, desc, eq, getDb } from "@envcove/db";
 import { requireUser } from "@/lib/authorization";
 import { CliTokenManager } from "@/components/cli-token-manager";
 export const dynamic = "force-dynamic";

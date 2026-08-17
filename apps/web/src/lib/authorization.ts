@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { and, environments, eq, getDb, projects } from "@envvault/db";
+import { and, environments, eq, getDb, projects } from "@envcove/db";
 
 export async function requireUser() {
   const session = await auth();

@@ -1,6 +1,6 @@
 import { hash } from "bcryptjs";
-import { eq, getDb, users } from "@envvault/db";
-import { registerSchema } from "@envvault/shared";
+import { eq, getDb, users } from "@envcove/db";
+import { registerSchema } from "@envcove/shared";
 
 export async function POST(request: Request) {
   const parsed = registerSchema.safeParse(

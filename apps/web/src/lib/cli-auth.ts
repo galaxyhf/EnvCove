@@ -1,11 +1,11 @@
 import { createHash } from "node:crypto";
-import { and, cliTokens, eq, getDb, isNull, users } from "@envvault/db";
+import { and, cliTokens, eq, getDb, isNull, users } from "@envcove/db";
 
 export async function authenticateCli(request: Request) {
   const token = request.headers
     .get("authorization")
     ?.replace(/^Bearer\s+/i, "");
-  if (!token?.startsWith("ev_live_")) return null;
+  if (!token) return null;
   const tokenHash = createHash("sha256").update(token).digest("hex");
   const [result] = await getDb()
     .select({ token: cliTokens, user: users })

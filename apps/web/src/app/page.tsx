@@ -100,7 +100,7 @@ function Brand() {
       <span className="grid size-7 place-items-center rounded-md border border-primary/25 bg-primary/10">
         <KeyRound className="size-3.5 text-primary" />
       </span>
-      EnvVault
+      EnvCove
     </a>
   );
 }
@@ -196,7 +196,7 @@ export default function Home() {
             <div className="terminal-content space-y-5 p-7 font-mono text-[13px] leading-6">
               <div>
                 <p>
-                  <span className="text-primary">$</span> envvault pull
+                  <span className="text-primary">$</span> envcove pull
                 </p>
                 <div className="mt-2 text-muted-foreground">
                   <p>
@@ -220,7 +220,7 @@ export default function Home() {
               </div>
               <div className="border-t border-border pt-5">
                 <p>
-                  <span className="text-primary">$</span> envvault run npm run
+                  <span className="text-primary">$</span> envcove run npm run
                   dev
                 </p>
                 <p className="mt-2 text-muted-foreground">
@@ -278,7 +278,7 @@ export default function Home() {
             Um fluxo simples para um problema que costuma virar improviso.
           </h2>
           <p className="mt-5 max-w-md text-pretty leading-7 text-muted-foreground">
-            O EnvVault conecta armazenamento, controle de acesso e uso no
+            O EnvCove conecta armazenamento, controle de acesso e uso no
             terminal. A equipe sabe onde o secret está e o projeto sabe como
             recebê-lo.
           </p>
@@ -318,7 +318,7 @@ export default function Home() {
             </h2>
             <p className="mt-5 max-w-2xl text-pretty leading-7 text-muted-foreground">
               Em muitos projetos, o `.env` continua sendo transportado
-              manualmente. O EnvVault transforma esse arquivo isolado em um
+              manualmente. O EnvCove transforma esse arquivo isolado em um
               fluxo controlado de ponta a ponta.
             </p>
           </div>
@@ -328,7 +328,7 @@ export default function Home() {
           >
             <table className="w-full min-w-[720px] border-collapse text-left">
               <caption className="sr-only">
-                Comparação entre o EnvVault e o compartilhamento manual de
+                Comparação entre o EnvCove e o compartilhamento manual de
                 arquivos .env
               </caption>
               <thead>
@@ -337,7 +337,7 @@ export default function Home() {
                     Critério
                   </th>
                   <th className="w-[37.5%] px-6 py-5 font-medium text-primary">
-                    EnvVault
+                    EnvCove
                   </th>
                   <th className="w-[37.5%] py-5 pl-6 font-medium text-muted-foreground">
                     Fluxo manual com .env
@@ -345,7 +345,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                {comparison.map(([criterion, envVault, manual]) => (
+                {comparison.map(([criterion, envCove, manual]) => (
                   <tr key={criterion} className="border-b border-border last:border-0">
                     <th className="py-6 pr-6 text-sm font-medium">
                       {criterion}
@@ -353,7 +353,7 @@ export default function Home() {
                     <td className="border-x border-border bg-primary/[0.035] px-6 py-6 text-sm leading-6">
                       <span className="flex items-start gap-2.5">
                         <Check className="mt-1 size-3.5 shrink-0 text-primary" />
-                        {envVault}
+                        {envCove}
                       </span>
                     </td>
                     <td className="py-6 pl-6 text-sm leading-6 text-muted-foreground">
@@ -415,7 +415,7 @@ export default function Home() {
           Seus secrets não pertencem a chats ou commits.
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Crie seu primeiro vault e conecte um projeto em poucos minutos.
+          Crie sua conta e conecte um projeto em poucos minutos.
         </p>
         <Button asChild size="lg" className="mt-8">
           <Link href="/register">

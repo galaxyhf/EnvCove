@@ -1,5 +1,5 @@
-import { decryptSecret } from "@envvault/crypto";
-import { and, environments, eq, getDb, secrets } from "@envvault/db";
+import { decryptSecret } from "@envcove/crypto";
+import { and, environments, eq, getDb, secrets } from "@envcove/db";
 import { audit } from "@/lib/audit";
 import { authenticateCli } from "@/lib/cli-auth";
 import { ownedProject } from "@/lib/authorization";

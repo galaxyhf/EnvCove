@@ -7,7 +7,7 @@ import {
   getDb,
   projects,
   secrets,
-} from "@envvault/db";
+} from "@envcove/db";
 import { requireUser } from "@/lib/authorization";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAuditActionLabel } from "@/lib/audit-label";

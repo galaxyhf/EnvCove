@@ -35,7 +35,7 @@ function Nav({ name }: { name?: string | null }) {
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center border-b px-5 font-semibold">
         <KeyRound className="mr-2 size-4 text-primary" />
-        EnvVault
+        EnvCove
       </div>
       <nav className="flex-1 space-y-1 p-3">
         {links.map(([href, label, Icon]) => (
@@ -82,7 +82,7 @@ export function DashboardNav({ name }: { name?: string | null }) {
           className="flex items-center gap-2 font-semibold"
         >
           <KeyRound className="size-4 text-primary" />
-          EnvVault
+          EnvCove
         </Link>
         <Sheet>
           <SheetTrigger asChild>

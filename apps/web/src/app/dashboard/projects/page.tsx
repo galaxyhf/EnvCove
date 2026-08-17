@@ -8,7 +8,7 @@ import {
   getDb,
   projects,
   secrets,
-} from "@envvault/db";
+} from "@envcove/db";
 import { requireUser } from "@/lib/authorization";
 import { Card, CardContent } from "@/components/ui/card";
 import { ProjectCreateDialog } from "@/components/project-create-dialog";

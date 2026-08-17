@@ -7,6 +7,7 @@ import { chmod, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import ora from "ora";
+import packageJson from "../package.json" with { type: "json" };
 
 type Config = {
   token: string;
@@ -22,12 +23,12 @@ type Project = {
   environmentCount?: number;
 };
 type Environment = { id: string; name: string; slug: string };
-type VaultConfig = { projectId: string; environment: string; output: string };
+type ProjectConfig = { projectId: string; environment: string; output: string };
 
-const DEFAULT_API_URL = "https://env-vault-web.vercel.app";
-const configDir = join(homedir(), ".envvault");
+const DEFAULT_API_URL = "https://env-cove-web.vercel.app";
+const configDir = join(homedir(), ".envcove");
 const configPath = join(configDir, "config.json");
-const vaultPath = resolve(".envvault.json");
+const projectConfigPath = resolve(".envcove.json");
 
 async function readJson<T>(path: string): Promise<T | null> {
   try {
@@ -46,7 +47,7 @@ async function saveConfig(config: Config) {
 async function authConfig(): Promise<Config> {
   const config = await readJson<Config>(configPath);
   if (!config?.token)
-    throw new Error("You are not authenticated.\n\nRun:\n  envvault login");
+    throw new Error("You are not authenticated.\n\nRun:\n  envcove login");
   return config;
 }
 
@@ -75,22 +76,22 @@ function printError(error: unknown) {
   process.exitCode = 1;
 }
 
-async function getVault(): Promise<VaultConfig> {
-  const config = await readJson<VaultConfig>(vaultPath);
+async function getProjectConfig(): Promise<ProjectConfig> {
+  const config = await readJson<ProjectConfig>(projectConfigPath);
   if (!config)
-    throw new Error(".envvault.json not found\n\nRun:\n  envvault init");
+    throw new Error(".envcove.json not found\n\nRun:\n  envcove init");
   return config;
 }
 
 async function loadSecrets(environmentOverride?: string) {
-  const vault = await getVault();
-  const env = environmentOverride ?? vault.environment;
+  const projectConfig = await getProjectConfig();
+  const env = environmentOverride ?? projectConfig.environment;
   return api<{
     project: Project;
     environment: Environment;
     secrets: Record<string, string>;
   }>(
-    `/api/cli/projects/${vault.projectId}/environments/${encodeURIComponent(env)}/secrets`,
+    `/api/cli/projects/${projectConfig.projectId}/environments/${encodeURIComponent(env)}/secrets`,
   );
 }
 
@@ -104,22 +105,22 @@ function envText(secrets: Record<string, string>) {
 
 const program = new Command();
 program
-  .name("envvault")
+  .name("envcove")
   .description("Secure environment variables from your terminal")
-  .version("0.1.0");
+  .version(packageJson.version);
 
 program
   .command("login")
   .description("Authenticate with a CLI token")
   .option(
     "--url <url>",
-    "Override the default EnvVault URL",
-    process.env.ENVVAULT_URL ?? DEFAULT_API_URL,
+    "Override the default EnvCove URL",
+    process.env.ENVCOVE_URL ?? DEFAULT_API_URL,
   )
   .action(async ({ url }) => {
     try {
       const token = await password({
-        message: "Enter your EnvVault token:",
+        message: "Enter your EnvCove token:",
         mask: "*",
       });
       const spinner = ora("Authenticating").start();
@@ -205,7 +206,7 @@ program
         const project = projects.find((item) => item.slug === slug);
         if (!project) throw new Error(`Project '${slug}' not found`);
         projectId = project.id;
-      } else projectId = (await getVault()).projectId;
+      } else projectId = (await getProjectConfig()).projectId;
       const { environments } = await api<{ environments: Environment[] }>(
         `/api/cli/projects/${projectId}/environments`,
       );
@@ -217,7 +218,7 @@ program
 
 program
   .command("init")
-  .description("Connect the current directory to EnvVault")
+  .description("Connect the current directory to EnvCove")
   .action(async () => {
     try {
       const { projects } = await api<{ projects: Project[] }>(
@@ -245,7 +246,7 @@ program
         default: ".env.local",
       });
       await writeFile(
-        vaultPath,
+        projectConfigPath,
         JSON.stringify({ projectId, environment, output }, null, 2) + "\n",
       );
       const gitignorePath = resolve(".gitignore");
@@ -258,7 +259,7 @@ program
           gitignorePath,
           `${existing}${existing && !existing.endsWith("\n") ? "\n" : ""}${rules.join("\n")}\n`,
         );
-      console.log(chalk.green("✓") + " .envvault.json created");
+      console.log(chalk.green("✓") + " .envcove.json created");
     } catch (error) {
       printError(error);
     }
@@ -272,8 +273,8 @@ program
   .option("--force")
   .action(async (options) => {
     try {
-      const vault = await getVault();
-      const output = resolve(options.output ?? vault.output);
+      const projectConfig = await getProjectConfig();
+      const output = resolve(options.output ?? projectConfig.output);
       if (!options.force) {
         const exists = await readFile(output)
           .then(() => true)
@@ -327,5 +328,5 @@ program
   });
 
 program.showHelpAfterError();
-program.addHelpText("beforeAll", chalk.bold("\nEnvVault CLI\n"));
+program.addHelpText("beforeAll", chalk.bold("\nEnvCove CLI\n"));
 await program.parseAsync();

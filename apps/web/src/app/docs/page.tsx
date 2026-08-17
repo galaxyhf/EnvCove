@@ -22,7 +22,7 @@ const content = {
       "Crie um token em Dashboard → Tokens da CLI. Ele é exibido uma única vez e armazenado globalmente com permissões restritas.",
     initialize: "Inicializar um projeto",
     initializeText:
-      "O comando interativo cria um arquivo .envvault.json que pode ser versionado e não contém valores secretos.",
+      "O comando interativo cria um arquivo .envcove.json que pode ser versionado e não contém valores secretos.",
     pulling: "Baixar variáveis",
     running: "Executar comandos",
     runningText:
@@ -44,7 +44,7 @@ const content = {
       "Create a token in Dashboard → CLI Tokens. It is shown once and stored globally with restricted permissions.",
     initialize: "Initialize a Project",
     initializeText:
-      "The interactive command creates a committable .envvault.json containing no secret values.",
+      "The interactive command creates a committable .envcove.json containing no secret values.",
     pulling: "Pulling Secrets",
     running: "Running Commands",
     runningText:
@@ -72,7 +72,7 @@ export default async function Page({
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-5">
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <KeyRound className="size-4 text-primary" />
-            EnvVault Docs
+            EnvCove Docs
           </Link>
           <div className="flex items-center text-sm">
             <Link
@@ -95,26 +95,26 @@ export default async function Page({
         </p>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.gettingStarted}</h2>
-          <Code>{`npm install -g @galaxyhf/envvault\nenvvault login\ncd meu-projeto\nenvvault init\nenvvault pull\nnpm run dev`}</Code>
+          <Code>{`npm install -g envcove\nenvcove login\ncd meu-projeto\nenvcove init\nenvcove pull\nnpm run dev`}</Code>
         </section>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.login}</h2>
           <p className="mt-3 text-muted-foreground">{text.loginText}</p>
-          <Code>{`envvault login\nenvvault whoami`}</Code>
+          <Code>{`envcove login\nenvcove whoami`}</Code>
         </section>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.initialize}</h2>
           <p className="mt-3 text-muted-foreground">{text.initializeText}</p>
-          <Code>{`envvault init\n\n{\n  "projectId": "project-uuid",\n  "environment": "development",\n  "output": ".env.local"\n}`}</Code>
+          <Code>{`envcove init\n\n{\n  "projectId": "project-uuid",\n  "environment": "development",\n  "output": ".env.local"\n}`}</Code>
         </section>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.pulling}</h2>
-          <Code>{`envvault pull\nenvvault pull --env production --output .env.production\nenvvault pull --force`}</Code>
+          <Code>{`envcove pull\nenvcove pull --env production --output .env.production\nenvcove pull --force`}</Code>
         </section>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.running}</h2>
           <p className="mt-3 text-muted-foreground">{text.runningText}</p>
-          <Code>{`envvault run npm run dev\nenvvault run node server.js`}</Code>
+          <Code>{`envcove run npm run dev\nenvcove run node server.js`}</Code>
         </section>
         <section className="border-b py-10">
           <h2 className="text-2xl font-semibold">{text.reference}</h2>

@@ -1,5 +1,5 @@
 {
-  "name": "@envvault/web",
+  "name": "@envcove/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,9 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@envvault/crypto": "workspace:*",
-    "@envvault/db": "workspace:*",
-    "@envvault/shared": "workspace:*",
+    "@envcove/crypto": "workspace:*",
+    "@envcove/db": "workspace:*",
+    "@envcove/shared": "workspace:*",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

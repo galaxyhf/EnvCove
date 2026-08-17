@@ -1,5 +1,5 @@
-import { decryptSecret } from "@envvault/crypto";
-import { and, environments, eq, getDb, projects, secrets } from "@envvault/db";
+import { decryptSecret } from "@envcove/crypto";
+import { and, environments, eq, getDb, projects, secrets } from "@envcove/db";
 import { audit } from "@/lib/audit";
 import { requireUser } from "@/lib/authorization";
 import { rateLimit } from "@/lib/rate-limit";
