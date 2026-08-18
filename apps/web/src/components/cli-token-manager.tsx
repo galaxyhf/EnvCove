@@ -1,7 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Copy, Plus, TerminalSquare, Trash2 } from "lucide-react";
+import {
+  Copy,
+  Plus,
+  TerminalSquare,
+  Trash2,
+} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,6 +18,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Dialog,
   DialogContent,
@@ -36,6 +42,7 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
   const [created, setCreated] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [copyPending, setCopyPending] = useState(false);
   const [tokenToRevoke, setTokenToRevoke] = useState<Token | null>(null);
   const [revokeError, setRevokeError] = useState("");
   const [revokePending, setRevokePending] = useState(false);
@@ -126,13 +133,20 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
                 </code>
                 <Button
                   size="sm"
+                  disabled={copyPending}
+                  aria-busy={copyPending}
                   onClick={async () => {
-                    await navigator.clipboard.writeText(created);
-                    setOpen(false);
+                    setCopyPending(true);
+                    try {
+                      await navigator.clipboard.writeText(created);
+                      setOpen(false);
+                    } finally {
+                      setCopyPending(false);
+                    }
                   }}
                 >
-                  <Copy />
-                  Copiar e fechar
+                  {copyPending ? <Spinner /> : <Copy />}
+                  {copyPending ? "Copiando..." : "Copiar e fechar"}
                 </Button>
               </div>
             ) : (
@@ -157,7 +171,12 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
                     {error}
                   </p>
                 ) : null}
-                <Button className="w-full" disabled={pending}>
+                <Button
+                  className="w-full"
+                  disabled={pending}
+                  aria-busy={pending}
+                >
+                  {pending ? <Spinner /> : null}
                   {pending ? "Gerando..." : "Gerar"}
                 </Button>
               </form>
@@ -236,11 +255,13 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
             <AlertDialogAction
               variant="destructive"
               disabled={revokePending}
+              aria-busy={revokePending}
               onClick={(event) => {
                 event.preventDefault();
                 void revoke();
               }}
             >
+              {revokePending ? <Spinner /> : null}
               {revokePending ? "Excluindo..." : "Excluir token"}
             </AlertDialogAction>
           </AlertDialogFooter>

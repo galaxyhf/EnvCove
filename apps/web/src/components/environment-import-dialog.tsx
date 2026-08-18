@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { LoaderCircle, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { importSecrets } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 
 export function EnvironmentImportDialog({
   environmentId,
@@ -82,8 +83,8 @@ export function EnvironmentImportDialog({
               {error}
             </p>
           ) : null}
-          <Button className="w-full" disabled={pending}>
-            {pending ? <LoaderCircle className="animate-spin" /> : <Upload />}
+          <Button className="w-full" disabled={pending} aria-busy={pending}>
+            {pending ? <Spinner /> : <Upload />}
             {pending ? "Importando..." : "Importar arquivo"}
           </Button>
         </form>

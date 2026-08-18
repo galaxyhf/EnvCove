@@ -1,45 +1,83 @@
 "use client";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
+
+function AuthSubmitButton({
+  mode,
+  redirecting,
+}: {
+  mode: "login" | "register";
+  redirecting: boolean;
+}) {
+  const { pending: submitting } = useFormStatus();
+  const pending = submitting || redirecting;
+
+  return (
+    <Button
+      type="submit"
+      className="w-full"
+      disabled={pending}
+      aria-busy={pending}
+    >
+      {pending ? <Spinner /> : null}
+      {pending
+        ? mode === "login"
+          ? "Entrando..."
+          : "Criando conta..."
+        : mode === "login"
+          ? "Entrar"
+          : "Criar conta"}
+    </Button>
+  );
+}
+
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const router = useRouter();
   const [error, setError] = useState("");
-  const [pending, setPending] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
+
   async function submit(formData: FormData) {
-    setPending(true);
     setError("");
-    const email = String(formData.get("email"));
-    const password = String(formData.get("password"));
-    if (mode === "register") {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name: formData.get("name"), email, password }),
+    try {
+      const email = String(formData.get("email"));
+      const password = String(formData.get("password"));
+      if (mode === "register") {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ name: formData.get("name"), email, password }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          setError(data.error ?? "Não foi possível criar a conta.");
+          return;
+        }
+      }
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
-      const data = await response.json();
-      if (!response.ok) {
-        setError(data.error ?? "Não foi possível criar a conta.");
-        setPending(false);
+      if (result?.error) {
+        setError("Email ou senha inválidos.");
         return;
       }
+      setRedirecting(true);
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      setError(
+        mode === "login"
+          ? "Não foi possível entrar. Tente novamente."
+          : "Não foi possível criar a conta. Tente novamente.",
+      );
     }
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-    if (result?.error) {
-      setError("Email ou senha inválidos.");
-      setPending(false);
-      return;
-    }
-    router.push("/dashboard");
-    router.refresh();
   }
   return (
     <form action={submit} className="space-y-5">
@@ -77,10 +115,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           {error}
         </p>
       )}
-      <Button className="w-full" disabled={pending}>
-        {pending && <LoaderCircle className="animate-spin" />}
-        {mode === "login" ? "Entrar" : "Criar conta"}
-      </Button>
+      <AuthSubmitButton mode={mode} redirecting={redirecting} />
     </form>
   );
 }

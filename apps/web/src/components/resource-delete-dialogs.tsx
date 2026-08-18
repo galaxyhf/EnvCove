@@ -16,6 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 
 function DeleteDialog({
   triggerLabel,
@@ -74,11 +75,13 @@ function DeleteDialog({
           <AlertDialogAction
             variant="destructive"
             disabled={pending}
+            aria-busy={pending}
             onClick={(event) => {
               event.preventDefault();
               confirm();
             }}
           >
+            {pending ? <Spinner /> : null}
             {pending ? "Excluindo..." : "Excluir definitivamente"}
           </AlertDialogAction>
         </AlertDialogFooter>

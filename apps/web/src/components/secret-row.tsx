@@ -6,7 +6,6 @@ import {
   Eye,
   EyeOff,
   History,
-  LoaderCircle,
   Pencil,
   Trash2,
 } from "lucide-react";
@@ -33,6 +32,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 export type SecretListItem = {
   id: string;
   key: string;
@@ -49,6 +49,8 @@ export function SecretRow({
 }) {
   const [value, setValue] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [revealing, setRevealing] = useState(false);
+  const [copying, setCopying] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [editError, setEditError] = useState("");
   const [updating, startUpdateTransition] = useTransition();
@@ -57,28 +59,40 @@ export function SecretRow({
   const [deleting, startDeleteTransition] = useTransition();
   async function reveal() {
     if (value !== null) return setValue(null);
-    const r = await fetch(`/api/secrets/${secret.id}/reveal`, {
-      method: "POST",
-    });
-    const data = await r.json();
-    if (r.ok) {
-      setValue(data.value);
-      setTimeout(() => setValue(null), 30000);
-    }
-  }
-  async function copy() {
-    let current = value;
-    if (current === null) {
+    if (revealing) return;
+    setRevealing(true);
+    try {
       const r = await fetch(`/api/secrets/${secret.id}/reveal`, {
         method: "POST",
       });
       const data = await r.json();
-      if (!r.ok) return;
-      current = data.value;
+      if (r.ok) {
+        setValue(data.value);
+        setTimeout(() => setValue(null), 30000);
+      }
+    } finally {
+      setRevealing(false);
     }
-    await navigator.clipboard.writeText(current ?? "");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1200);
+  }
+  async function copy() {
+    if (copying) return;
+    setCopying(true);
+    try {
+      let current = value;
+      if (current === null) {
+        const r = await fetch(`/api/secrets/${secret.id}/reveal`, {
+          method: "POST",
+        });
+        const data = await r.json();
+        if (!r.ok) return;
+        current = data.value;
+      }
+      await navigator.clipboard.writeText(current ?? "");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+    } finally {
+      setCopying(false);
+    }
   }
   function update(formData: FormData) {
     startUpdateTransition(async () => {
@@ -117,11 +131,31 @@ export function SecretRow({
         {new Date(secret.updatedAt).toLocaleDateString("pt-BR")}
       </time>
       <div className="flex justify-end gap-1">
-        <Button size="icon-sm" variant="ghost" onClick={reveal}>
-          {value ? <EyeOff /> : <Eye />}
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          disabled={revealing}
+          aria-busy={revealing}
+          onClick={() => void reveal()}
+        >
+          {revealing ? <Spinner /> : value ? (
+            <EyeOff />
+          ) : (
+            <Eye />
+          )}
         </Button>
-        <Button size="icon-sm" variant="ghost" onClick={copy}>
-          {copied ? <Check /> : <Copy />}
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          disabled={copying}
+          aria-busy={copying}
+          onClick={() => void copy()}
+        >
+          {copying ? <Spinner /> : copied ? (
+            <Check />
+          ) : (
+            <Copy />
+          )}
         </Button>
         <Dialog
           open={editOpen}
@@ -170,8 +204,12 @@ export function SecretRow({
                   {editError}
                 </p>
               ) : null}
-              <Button className="w-full" disabled={updating}>
-                {updating ? <LoaderCircle className="animate-spin" /> : null}
+              <Button
+                className="w-full"
+                disabled={updating}
+                aria-busy={updating}
+              >
+                {updating ? <Spinner /> : null}
                 {updating ? "Salvando..." : "Salvar nova versão"}
               </Button>
             </form>
@@ -239,11 +277,13 @@ export function SecretRow({
               <AlertDialogAction
                 variant="destructive"
                 disabled={deleting}
+                aria-busy={deleting}
                 onClick={(event) => {
                   event.preventDefault();
                   confirmDelete();
                 }}
               >
+                {deleting ? <Spinner /> : null}
                 {deleting ? "Excluindo..." : "Excluir definitivamente"}
               </AlertDialogAction>
             </AlertDialogFooter>

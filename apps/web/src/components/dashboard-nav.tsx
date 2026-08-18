@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -13,6 +14,7 @@ import {
   TerminalSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Sheet,
   SheetContent,
@@ -31,6 +33,18 @@ const links = [
 ] as const;
 function Nav({ name }: { name?: string | null }) {
   const path = usePathname();
+  const [signingOut, setSigningOut] = useState(false);
+
+  async function handleSignOut() {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await signOut({ callbackUrl: "/" });
+    } catch {
+      setSigningOut(false);
+    }
+  }
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center border-b px-5 font-semibold">
@@ -61,10 +75,12 @@ function Nav({ name }: { name?: string | null }) {
         <Button
           variant="ghost"
           className="w-full justify-start"
-          onClick={() => signOut({ callbackUrl: "/" })}
+          disabled={signingOut}
+          aria-busy={signingOut}
+          onClick={() => void handleSignOut()}
         >
-          <LogOut />
-          Sair
+          {signingOut ? <Spinner /> : <LogOut />}
+          {signingOut ? "Saindo..." : "Sair"}
         </Button>
       </div>
     </div>

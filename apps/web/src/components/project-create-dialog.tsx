@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { LoaderCircle, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { createProject } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 
 export function ProjectCreateDialog() {
@@ -75,8 +76,8 @@ export function ProjectCreateDialog() {
               {error}
             </p>
           ) : null}
-          <Button className="w-full" disabled={pending}>
-            {pending ? <LoaderCircle className="animate-spin" /> : null}
+          <Button className="w-full" disabled={pending} aria-busy={pending}>
+            {pending ? <Spinner /> : null}
             {pending ? "Criando..." : "Criar projeto"}
           </Button>
         </form>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { LoaderCircle, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { saveSecret } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 
 export function SecretCreateDialog({
   environmentId,
@@ -86,8 +87,8 @@ export function SecretCreateDialog({
               {error}
             </p>
           ) : null}
-          <Button className="w-full" disabled={pending}>
-            {pending ? <LoaderCircle className="animate-spin" /> : null}
+          <Button className="w-full" disabled={pending} aria-busy={pending}>
+            {pending ? <Spinner /> : null}
             {pending ? "Salvando..." : "Criptografar e salvar"}
           </Button>
         </form>
