@@ -127,6 +127,11 @@ export async function createEnvironment(projectId: string, formData: FormData) {
     action: "environment.created",
     metadata: { name: environment.name },
   });
+  await db
+    .update(projects)
+    .set({ updatedAt: new Date() })
+    .where(eq(projects.id, projectId));
+  revalidatePath("/dashboard");
   revalidatePath(`/dashboard/projects/${projectId}`);
 }
 
@@ -194,6 +199,11 @@ export async function saveSecret(environmentId: string, formData: FormData) {
     action: existing ? "secret.updated" : "secret.created",
     metadata: { key: input.key },
   });
+  await db
+    .update(projects)
+    .set({ updatedAt: new Date() })
+    .where(eq(projects.id, ownership.project.id));
+  revalidatePath("/dashboard");
   revalidatePath(`/dashboard/projects/${ownership.project.id}`);
 }
 
@@ -232,6 +242,11 @@ export async function restoreSecretVersion(versionId: string) {
     action: "secret.version_restored",
     metadata: { key: row.secret.key },
   });
+  await getDb()
+    .update(projects)
+    .set({ updatedAt: new Date() })
+    .where(eq(projects.id, row.project.id));
+  revalidatePath("/dashboard");
   revalidatePath(`/dashboard/projects/${row.project.id}`);
 }
 
@@ -275,5 +290,10 @@ export async function deleteSecret(secretId: string) {
     action: "secret.deleted",
     metadata: { key: row.secret.key },
   });
+  await getDb()
+    .update(projects)
+    .set({ updatedAt: new Date() })
+    .where(eq(projects.id, row.project.id));
+  revalidatePath("/dashboard");
   revalidatePath(`/dashboard/projects/${row.project.id}`);
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 import { Plus } from "lucide-react";
 import { createProject } from "@/app/actions";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 
 export function ProjectCreateDialog() {
+  const id = useId();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
@@ -56,20 +57,20 @@ export function ProjectCreateDialog() {
         </DialogHeader>
         <form action={submit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="project-name">
+            <Label htmlFor={`${id}-name`}>
               Nome <span className="text-destructive" aria-hidden="true">*</span>
               <span className="sr-only"> (obrigatório)</span>
             </Label>
             <Input
-              id="project-name"
+              id={`${id}-name`}
               name="name"
               placeholder="SQLVault"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="project-description">Descrição</Label>
-            <Textarea id="project-description" name="description" />
+            <Label htmlFor={`${id}-description`}>Descrição</Label>
+            <Textarea id={`${id}-description`} name="description" />
           </div>
           {error ? (
             <p className="text-sm text-destructive" role="alert">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 import { Plus } from "lucide-react";
 import { createEnvironment } from "@/app/actions";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 
 export function EnvironmentCreateDialog({ projectId }: { projectId: string }) {
+  const id = useId();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
@@ -55,15 +56,15 @@ export function EnvironmentCreateDialog({ projectId }: { projectId: string }) {
         </DialogHeader>
         <form action={submit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="environment-name">
+            <Label htmlFor={`${id}-name`}>
               Nome <span className="text-destructive" aria-hidden="true">*</span>
               <span className="sr-only"> (obrigatório)</span>
             </Label>
-            <Input id="environment-name" name="name" required />
+            <Input id={`${id}-name`} name="name" required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="environment-description">Descrição</Label>
-            <Input id="environment-description" name="description" />
+            <Label htmlFor={`${id}-description`}>Descrição</Label>
+            <Input id={`${id}-description`} name="description" />
           </div>
           {error ? (
             <p className="text-sm text-destructive" role="alert">

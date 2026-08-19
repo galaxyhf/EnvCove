@@ -17,10 +17,12 @@ export function ProjectSecretSearch({
   secrets,
   environmentId,
   children,
+  emptyActions,
 }: {
   secrets: SecretListItem[];
   environmentId: string;
   children: ReactNode;
+  emptyActions?: ReactNode;
 }) {
   const [query, setQuery] = useState("");
   const normalizedQuery = normalizeSearch(query.trim());
@@ -62,10 +64,22 @@ export function ProjectSecretSearch({
             environmentId={environmentId}
           />
         ))
-      ) : (
+      ) : query ? (
         <p className="py-20 text-center text-sm text-muted-foreground">
-          Nenhuma variável encontrada.
+          Nenhuma variável corresponde à busca.
         </p>
+      ) : (
+        <div className="flex flex-col items-center py-16 text-center">
+          <p className="font-medium">Nenhuma variável neste ambiente</p>
+          <p className="mt-1 max-w-md text-sm text-muted-foreground">
+            Importe um arquivo .env ou adicione a primeira variável manualmente.
+          </p>
+          {emptyActions ? (
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              {emptyActions}
+            </div>
+          ) : null}
+        </div>
       )}
     </>
   );

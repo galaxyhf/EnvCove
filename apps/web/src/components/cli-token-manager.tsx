@@ -222,9 +222,17 @@ export function CliTokenManager({ tokens }: { tokens: Token[] }) {
             </div>
           ))
         ) : (
-          <p className="py-20 text-center text-sm text-muted-foreground">
-            Nenhum token da CLI.
-          </p>
+          <div className="flex flex-col items-center py-16 text-center">
+            <TerminalSquare className="mb-4 size-6 text-primary" />
+            <p className="font-medium">Configure a CLI</p>
+            <p className="mt-1 max-w-md text-sm text-muted-foreground">
+              Gere um token para conectar esta conta aos seus projetos locais.
+            </p>
+            <Button className="mt-5" onClick={() => handleOpenChange(true)}>
+              <Plus />
+              Criar primeiro token
+            </Button>
+          </div>
         )}
       </div>
       <AlertDialog

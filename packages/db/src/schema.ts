@@ -29,6 +29,34 @@ export const users = pgTable(
   (table) => [uniqueIndex("users_email_unique").on(table.email)],
 );
 
+export const webSessions = pgTable(
+  "web_sessions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    userAgent: text("user_agent").notNull().default(""),
+    ipAddress: text("ip_address"),
+    lastSeenAt: timestamp("last_seen_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("web_sessions_user_id_idx").on(table.userId),
+    index("web_sessions_user_active_idx").on(
+      table.userId,
+      table.revokedAt,
+      table.expiresAt,
+    ),
+  ],
+);
+
 export const projects = pgTable(
   "projects",
   {

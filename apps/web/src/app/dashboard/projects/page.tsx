@@ -63,11 +63,14 @@ export default async function Page() {
         </div>
       ) : (
         <Card>
-          <CardContent className="py-20 text-center">
+          <CardContent className="flex flex-col items-center py-16 text-center">
             <p className="font-medium">Nenhum projeto ainda</p>
             <p className="mt-1 text-sm text-muted-foreground">
               Crie seu primeiro projeto para começar a gerenciar variáveis.
             </p>
+            <div className="mt-5">
+              <ProjectCreateDialog />
+            </div>
           </CardContent>
         </Card>
       )}

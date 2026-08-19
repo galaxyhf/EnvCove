@@ -39,6 +39,7 @@ function Nav({ name }: { name?: string | null }) {
     if (signingOut) return;
     setSigningOut(true);
     try {
+      await fetch("/api/account/session", { method: "DELETE" });
       await signOut({ callbackUrl: "/" });
     } catch {
       setSigningOut(false);

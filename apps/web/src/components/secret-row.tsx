@@ -51,6 +51,7 @@ export function SecretRow({
   const [copied, setCopied] = useState(false);
   const [revealing, setRevealing] = useState(false);
   const [copying, setCopying] = useState(false);
+  const [actionError, setActionError] = useState("");
   const [editOpen, setEditOpen] = useState(false);
   const [editError, setEditError] = useState("");
   const [updating, startUpdateTransition] = useTransition();
@@ -58,18 +59,27 @@ export function SecretRow({
   const [deleteError, setDeleteError] = useState("");
   const [deleting, startDeleteTransition] = useTransition();
   async function reveal() {
-    if (value !== null) return setValue(null);
+    if (value !== null) {
+      setValue(null);
+      setActionError("");
+      return;
+    }
     if (revealing) return;
     setRevealing(true);
+    setActionError("");
     try {
       const r = await fetch(`/api/secrets/${secret.id}/reveal`, {
         method: "POST",
       });
-      const data = await r.json();
-      if (r.ok) {
-        setValue(data.value);
-        setTimeout(() => setValue(null), 30000);
-      }
+      const data = await r.json().catch(() => null);
+      if (!r.ok || typeof data?.value !== "string")
+        throw new Error("REVEAL_FAILED");
+      setValue(data.value);
+      setTimeout(() => setValue(null), 30000);
+    } catch {
+      setActionError(
+        "Não foi possível revelar a variável. Atualize a página e tente novamente.",
+      );
     } finally {
       setRevealing(false);
     }
@@ -77,19 +87,25 @@ export function SecretRow({
   async function copy() {
     if (copying) return;
     setCopying(true);
+    setActionError("");
     try {
       let current = value;
       if (current === null) {
         const r = await fetch(`/api/secrets/${secret.id}/reveal`, {
           method: "POST",
         });
-        const data = await r.json();
-        if (!r.ok) return;
+        const data = await r.json().catch(() => null);
+        if (!r.ok || typeof data?.value !== "string")
+          throw new Error("COPY_FAILED");
         current = data.value;
       }
       await navigator.clipboard.writeText(current ?? "");
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
+    } catch {
+      setActionError(
+        "Não foi possível copiar a variável. Verifique a permissão da área de transferência e tente novamente.",
+      );
     } finally {
       setCopying(false);
     }
@@ -136,6 +152,8 @@ export function SecretRow({
           variant="ghost"
           disabled={revealing}
           aria-busy={revealing}
+          aria-label={value ? `Ocultar ${secret.key}` : `Revelar ${secret.key}`}
+          title={value ? "Ocultar valor" : "Revelar valor"}
           onClick={() => void reveal()}
         >
           {revealing ? <Spinner /> : value ? (
@@ -149,6 +167,8 @@ export function SecretRow({
           variant="ghost"
           disabled={copying}
           aria-busy={copying}
+          aria-label={copied ? `${secret.key} copiada` : `Copiar ${secret.key}`}
+          title={copied ? "Copiado" : "Copiar valor"}
           onClick={() => void copy()}
         >
           {copying ? <Spinner /> : copied ? (
@@ -166,7 +186,12 @@ export function SecretRow({
           }}
         >
           <DialogTrigger asChild>
-            <Button size="icon-sm" variant="ghost">
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              aria-label={`Editar ${secret.key}`}
+              title="Editar variável"
+            >
               <Pencil />
             </Button>
           </DialogTrigger>
@@ -217,7 +242,12 @@ export function SecretRow({
         </Dialog>
         <Dialog>
           <DialogTrigger asChild>
-            <Button size="icon-sm" variant="ghost">
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              aria-label={`Ver histórico de ${secret.key}`}
+              title="Ver histórico"
+            >
               <History />
             </Button>
           </DialogTrigger>
@@ -290,6 +320,14 @@ export function SecretRow({
           </AlertDialogContent>
         </AlertDialog>
       </div>
+      {actionError ? (
+        <p
+          className="text-sm text-destructive lg:col-span-4"
+          role="alert"
+        >
+          {actionError}
+        </p>
+      ) : null}
     </div>
   );
 }

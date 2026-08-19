@@ -8,6 +8,13 @@
       "when": 1786665423430,
       "tag": "0000_boring_snowbird",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1787181082370,
+      "tag": "0001_rapid_logan",
+      "breakpoints": true
     }
   ]
 }

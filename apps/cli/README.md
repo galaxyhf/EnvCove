@@ -4,6 +4,8 @@ CLI oficial do EnvCove para conectar projetos e carregar variáveis de ambiente 
 
 Use a CLI para gerar arquivos `.env` ou executar processos com os secrets diretamente em memória.
 
+Acesse [envcove.vercel.app](https://envcove.vercel.app) para criar sua conta, cadastrar projetos e gerar um token em **Tokens da CLI**.
+
 ## Requisitos
 
 - Node.js 20 ou superior
@@ -27,13 +29,14 @@ envcove --help
 
 ### 1. Autentique o terminal
 
-Crie um token no dashboard e execute:
+Entre no [dashboard do EnvCove](https://envcove.vercel.app), crie um token em **Tokens da CLI** e execute:
 
 ```bash
 envcove login
 ```
 
 O token completo aparece somente uma vez no dashboard e não é exibido enquanto você o informa no terminal.
+O login fica salvo para o usuário da máquina e é reutilizado em qualquer projeto. Se você executar `envcove login` novamente, a CLI informará que a sessão já existe; para trocar de conta, execute `envcove logout` primeiro.
 
 ### 2. Conecte um projeto
 

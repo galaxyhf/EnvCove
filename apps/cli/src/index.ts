@@ -138,6 +138,17 @@ program
     let spinner: ReturnType<typeof ora> | undefined;
 
     try {
+      const existingConfig = await readJson<Config>(configPath);
+      if (existingConfig?.token) {
+        const account = existingConfig.email
+          ? ` as ${chalk.bold(existingConfig.email)}`
+          : "";
+        console.log(
+          `${chalk.green("✓")} You are already logged in${account}.\n\nTo use another account, run:\n  envcove logout`,
+        );
+        return;
+      }
+
       const token = await password({
         message: "Enter your EnvCove token:",
         mask: "*",

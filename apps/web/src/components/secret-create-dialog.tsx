@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 import { Plus } from "lucide-react";
 import { saveSecret } from "@/app/actions";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ export function SecretCreateDialog({
 }: {
   environmentId: string;
 }) {
+  const id = useId();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
@@ -60,27 +61,27 @@ export function SecretCreateDialog({
         </DialogHeader>
         <form action={submit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="secret-key">
+            <Label htmlFor={`${id}-key`}>
               Chave <span className="text-destructive" aria-hidden="true">*</span>
               <span className="sr-only"> (obrigatório)</span>
             </Label>
-            <Input id="secret-key" name="key" required />
+            <Input id={`${id}-key`} name="key" required />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="secret-value">
+            <Label htmlFor={`${id}-value`}>
               Valor <span className="text-destructive" aria-hidden="true">*</span>
               <span className="sr-only"> (obrigatório)</span>
             </Label>
             <Input
-              id="secret-value"
+              id={`${id}-value`}
               name="value"
               type="password"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="secret-description">Descrição</Label>
-            <Input id="secret-description" name="description" />
+            <Label htmlFor={`${id}-description`}>Descrição</Label>
+            <Input id={`${id}-description`} name="description" />
           </div>
           {error ? (
             <p className="text-sm text-destructive" role="alert">

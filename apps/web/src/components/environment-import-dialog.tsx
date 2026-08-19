@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 import { Upload } from "lucide-react";
 import { importSecrets } from "@/app/actions";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ export function EnvironmentImportDialog({
 }: {
   environmentId: string;
 }) {
+  const id = useId();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
@@ -62,13 +63,13 @@ export function EnvironmentImportDialog({
         </DialogHeader>
         <form action={submit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="environment-file">
+            <Label htmlFor={`${id}-file`}>
               Arquivo .env{" "}
               <span className="text-destructive" aria-hidden="true">*</span>
               <span className="sr-only"> (obrigatório)</span>
             </Label>
             <Input
-              id="environment-file"
+              id={`${id}-file`}
               name="file"
               type="file"
               required

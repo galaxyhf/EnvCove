@@ -20,14 +20,6 @@ import { EnvironmentImportDialog } from "@/components/environment-import-dialog"
 import { ProjectDeleteDialog } from "@/components/resource-delete-dialogs";
 import { ProjectSecretSearch } from "@/components/project-secret-search";
 import { SecretCreateDialog } from "@/components/secret-create-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { SecretListItem } from "@/components/secret-row";
 export const dynamic = "force-dynamic";
 export default async function Page({
@@ -72,22 +64,15 @@ export default async function Page({
         .where(eq(secrets.environmentId, selected.id))
         .orderBy(desc(secretVersions.createdAt))
     : [];
-  const list: SecretListItem[] = secretRows
-    .map((s) => ({
-      id: s.id,
-      key: s.key,
-      description: s.description,
-      updatedAt: s.updatedAt.toISOString(),
-      versions: versions
-        .filter((v) => v.secretId === s.id)
-        .map((v) => v.createdAt.toISOString()),
-    }));
-  const all = await db
-    .select({ environmentId: secrets.environmentId, key: secrets.key })
-    .from(secrets)
-    .innerJoin(environments, eq(secrets.environmentId, environments.id))
-    .where(eq(environments.projectId, projectId));
-  const keys = [...new Set(all.map((x) => x.key))].sort();
+  const list: SecretListItem[] = secretRows.map((s) => ({
+    id: s.id,
+    key: s.key,
+    description: s.description,
+    updatedAt: s.updatedAt.toISOString(),
+    versions: versions
+      .filter((v) => v.secretId === s.id)
+      .map((v) => v.createdAt.toISOString()),
+  }));
   return (
     <div>
       <div className="mb-7">
@@ -105,53 +90,12 @@ export default async function Page({
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  <GitCompareArrows />
-                  Comparar
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>Comparar ambientes</DialogTitle>
-                  <DialogDescription>
-                    Apenas a presença das chaves. Os valores continuam ocultos.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="overflow-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="py-3 text-left">Chave</th>
-                        {envs.map((e) => (
-                          <th key={e.id} className="px-3">
-                            {e.name}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {keys.map((key) => (
-                        <tr key={key} className="border-b">
-                          <td className="py-3 font-mono text-xs">{key}</td>
-                          {envs.map((e) => (
-                            <td key={e.id} className="text-center text-primary">
-                              {all.some(
-                                (x) =>
-                                  x.key === key && x.environmentId === e.id,
-                              )
-                                ? "✓"
-                                : "—"}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </DialogContent>
-            </Dialog>
+            <Button variant="outline" asChild>
+              <Link href={`/dashboard/projects/${projectId}/compare`}>
+                <GitCompareArrows />
+                Comparar ambientes
+              </Link>
+            </Button>
             <EnvironmentCreateDialog projectId={projectId} />
             <ProjectDeleteDialog
               projectId={projectId}
@@ -178,6 +122,12 @@ export default async function Page({
               key={selected.id}
               secrets={list}
               environmentId={selected.id}
+              emptyActions={
+                <>
+                  <EnvironmentImportDialog environmentId={selected.id} />
+                  <SecretCreateDialog environmentId={selected.id} />
+                </>
+              }
             >
               <div className="flex gap-2">
                 <EnvironmentExportDialog environmentId={selected.id} />
@@ -189,8 +139,14 @@ export default async function Page({
         </Card>
       ) : (
         <Card>
-          <CardContent className="py-20 text-center">
-            Nenhum ambiente ainda.
+          <CardContent className="flex flex-col items-center py-16 text-center">
+            <p className="font-medium">Nenhum ambiente ainda</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Crie um ambiente para importar ou cadastrar variáveis.
+            </p>
+            <div className="mt-5">
+              <EnvironmentCreateDialog projectId={projectId} />
+            </div>
           </CardContent>
         </Card>
       )}
