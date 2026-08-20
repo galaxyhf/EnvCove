@@ -28,6 +28,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getAuditActionLabel } from "@/lib/audit-label";
+import { formatDate } from "@/lib/date-time";
 import { requireUser } from "@/lib/authorization";
 
 export const dynamic = "force-dynamic";
@@ -288,7 +289,7 @@ export default async function Page() {
                     </p>
                   </div>
                   <time className="shrink-0 text-xs text-muted-foreground">
-                    {item.createdAt.toLocaleDateString("pt-BR")}
+                    {formatDate(item.createdAt)}
                   </time>
                 </Link>
               );

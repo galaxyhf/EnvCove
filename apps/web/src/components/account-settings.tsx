@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import { Laptop, LogOut, Save, ShieldCheck } from "lucide-react";
 import {
   changePassword,
+  revokeOtherWebSessions,
   revokeWebSession,
   updateProfile,
 } from "@/app/account-actions";
@@ -43,6 +44,7 @@ export function AccountSettings({
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [revokingId, setRevokingId] = useState<string | null>(null);
+  const [revokingOthers, setRevokingOthers] = useState(false);
   const [sessionError, setSessionError] = useState("");
   const [profilePending, startProfileTransition] = useTransition();
   const [passwordPending, startPasswordTransition] = useTransition();
@@ -80,7 +82,7 @@ export function AccountSettings({
   }
 
   async function revoke(sessionId: string) {
-    if (revokingId) return;
+    if (revokingId || revokingOthers) return;
     setRevokingId(sessionId);
     setSessionError("");
     try {
@@ -90,6 +92,20 @@ export function AccountSettings({
       setSessionError("Não foi possível encerrar esta sessão.");
     } finally {
       setRevokingId(null);
+    }
+  }
+
+  async function revokeOthers() {
+    if (revokingId || revokingOthers) return;
+    setRevokingOthers(true);
+    setSessionError("");
+    try {
+      await revokeOtherWebSessions();
+      router.refresh();
+    } catch {
+      setSessionError("Não foi possível encerrar as outras sessões.");
+    } finally {
+      setRevokingOthers(false);
     }
   }
 
@@ -229,6 +245,25 @@ export function AccountSettings({
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
+            {sessions.some((session) => !session.current) ? (
+              <div className="flex items-center justify-between gap-4 border-b p-4">
+                <p className="text-xs text-muted-foreground">
+                  Não reconhece as demais sessões?
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={Boolean(revokingId) || revokingOthers}
+                  aria-busy={revokingOthers}
+                  onClick={() => void revokeOthers()}
+                >
+                  {revokingOthers ? <Spinner /> : <LogOut />}
+                  {revokingOthers
+                    ? "Encerrando..."
+                    : "Encerrar outras sessões"}
+                </Button>
+              </div>
+            ) : null}
             {sessions.map((session) => (
               <div
                 key={session.id}
@@ -256,7 +291,7 @@ export function AccountSettings({
                   <Button
                     variant="outline"
                     size="sm"
-                    disabled={Boolean(revokingId)}
+                    disabled={Boolean(revokingId) || revokingOthers}
                     aria-busy={revokingId === session.id}
                     onClick={() => void revoke(session.id)}
                   >

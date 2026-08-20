@@ -132,3 +132,25 @@ export async function revokeWebSession(sessionId: string) {
   });
   revalidatePath("/dashboard/settings");
 }
+
+export async function revokeOtherWebSessions() {
+  const currentUser = await requireUser();
+  const now = new Date();
+
+  await getDb()
+    .update(webSessions)
+    .set({ revokedAt: now })
+    .where(
+      and(
+        eq(webSessions.userId, currentUser.id),
+        ne(webSessions.id, currentUser.sessionId),
+        isNull(webSessions.revokedAt),
+      ),
+    );
+
+  await audit({
+    userId: currentUser.id,
+    action: "account.other_sessions_revoked",
+  });
+  revalidatePath("/dashboard/settings");
+}

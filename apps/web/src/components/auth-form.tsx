@@ -8,6 +8,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 
+const DEVICE_ID_STORAGE_KEY = "envcove-device-id";
+
+function getBrowserDeviceId() {
+  try {
+    const saved = window.localStorage.getItem(DEVICE_ID_STORAGE_KEY);
+    if (saved) return saved;
+
+    const deviceId = window.crypto.randomUUID();
+    window.localStorage.setItem(DEVICE_ID_STORAGE_KEY, deviceId);
+    return deviceId;
+  } catch {
+    return window.crypto.randomUUID();
+  }
+}
+
 function AuthSubmitButton({
   mode,
   redirecting,
@@ -62,6 +77,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       const result = await signIn("credentials", {
         email,
         password,
+        deviceId: getBrowserDeviceId(),
         redirect: false,
       });
       if (result?.error) {

@@ -36,6 +36,7 @@ export const webSessions = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
+    deviceId: uuid("device_id"),
     userAgent: text("user_agent").notNull().default(""),
     ipAddress: text("ip_address"),
     lastSeenAt: timestamp("last_seen_at", { withTimezone: true })
@@ -49,6 +50,10 @@ export const webSessions = pgTable(
   },
   (table) => [
     index("web_sessions_user_id_idx").on(table.userId),
+    uniqueIndex("web_sessions_user_device_unique").on(
+      table.userId,
+      table.deviceId,
+    ),
     index("web_sessions_user_active_idx").on(
       table.userId,
       table.revokedAt,

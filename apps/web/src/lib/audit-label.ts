@@ -13,6 +13,7 @@ export const actionLabels: Record<string, string> = {
   "account.profile_updated": "Perfil atualizado",
   "account.password_changed": "Senha alterada",
   "account.session_revoked": "Sessão encerrada",
+  "account.other_sessions_revoked": "Outras sessões encerradas",
 };
 
 export function getAuditActionLabel(action: string) {

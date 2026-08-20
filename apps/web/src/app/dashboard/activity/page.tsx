@@ -17,14 +17,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { actionLabels, getAuditActionLabel } from "@/lib/audit-label";
 import { requireUser } from "@/lib/authorization";
+import { formatDateTime, parseDateInAppTimeZone } from "@/lib/date-time";
 
 export const dynamic = "force-dynamic";
-
-function parseDate(value: string | undefined, endOfDay = false) {
-  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  const date = new Date(`${value}T${endOfDay ? "23:59:59.999" : "00:00:00"}`);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
 
 function getAuditHref(item: {
   action: string;
@@ -81,8 +76,8 @@ export default async function Page({
     conditions.push(eq(auditLogs.environmentId, query.environment));
   if (query.action && actionLabels[query.action])
     conditions.push(eq(auditLogs.action, query.action));
-  const from = parseDate(query.from);
-  const to = parseDate(query.to, true);
+  const from = parseDateInAppTimeZone(query.from);
+  const to = parseDateInAppTimeZone(query.to, true);
   if (from) conditions.push(gte(auditLogs.createdAt, from));
   if (to) conditions.push(lte(auditLogs.createdAt, to));
 
@@ -203,7 +198,7 @@ export default async function Page({
             <div className="flex gap-2 md:col-span-2 xl:col-span-5">
               <Button type="submit">Aplicar filtros</Button>
               <Button variant="outline" asChild>
-                <Link href="/dashboard/activity">Limpar filtros</Link>
+                <a href="/dashboard/activity">Limpar filtros</a>
               </Button>
             </div>
           </form>
@@ -229,7 +224,7 @@ export default async function Page({
                   </p>
                 </div>
                 <time className="shrink-0 text-xs text-muted-foreground">
-                  {item.createdAt.toLocaleString("pt-BR")}
+                  {formatDateTime(item.createdAt)}
                 </time>
               </Link>
             ))
