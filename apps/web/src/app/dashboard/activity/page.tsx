@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronDownIcon } from "lucide-react";
 import {
   and,
   auditLogs,
@@ -91,6 +92,13 @@ export default async function Page({
     .where(and(...conditions))
     .orderBy(desc(auditLogs.createdAt))
     .limit(200);
+  const filtersKey = [
+    query.project,
+    query.environment,
+    query.action,
+    query.from,
+    query.to,
+  ].join(":");
 
   return (
     <div>
@@ -104,54 +112,75 @@ export default async function Page({
 
       <Card className="mb-6">
         <CardContent>
-          <form className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          <form
+            key={filtersKey}
+            className="grid gap-4 md:grid-cols-2 xl:grid-cols-5"
+          >
             <div className="space-y-2">
               <Label htmlFor="audit-project">Projeto</Label>
-              <select
-                id="audit-project"
-                name="project"
-                defaultValue={query.project ?? ""}
-                className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                <option value="">Todos</option>
-                {projectRows.map((project) => (
-                  <option key={project.id} value={project.id}>
-                    {project.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  id="audit-project"
+                  name="project"
+                  defaultValue={query.project ?? ""}
+                  className="h-8 w-full appearance-none rounded-lg border border-input bg-background py-0 pr-10 pl-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <option value="">Todos</option>
+                  {projectRows.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="audit-environment">Ambiente</Label>
-              <select
-                id="audit-environment"
-                name="environment"
-                defaultValue={query.environment ?? ""}
-                className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                <option value="">Todos</option>
-                {environmentRows.map((environment) => (
-                  <option key={environment.id} value={environment.id}>
-                    {environment.projectName} · {environment.name}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  id="audit-environment"
+                  name="environment"
+                  defaultValue={query.environment ?? ""}
+                  className="h-8 w-full appearance-none rounded-lg border border-input bg-background py-0 pr-10 pl-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <option value="">Todos</option>
+                  {environmentRows.map((environment) => (
+                    <option key={environment.id} value={environment.id}>
+                      {environment.projectName} · {environment.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="audit-action">Ação</Label>
-              <select
-                id="audit-action"
-                name="action"
-                defaultValue={query.action ?? ""}
-                className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                <option value="">Todas</option>
-                {Object.entries(actionLabels).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  id="audit-action"
+                  name="action"
+                  defaultValue={query.action ?? ""}
+                  className="h-8 w-full appearance-none rounded-lg border border-input bg-background py-0 pr-10 pl-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <option value="">Todas</option>
+                  {Object.entries(actionLabels).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="audit-from">De</Label>
@@ -174,7 +203,7 @@ export default async function Page({
             <div className="flex gap-2 md:col-span-2 xl:col-span-5">
               <Button type="submit">Aplicar filtros</Button>
               <Button variant="outline" asChild>
-                <Link href="/dashboard/activity">Limpar</Link>
+                <Link href="/dashboard/activity">Limpar filtros</Link>
               </Button>
             </div>
           </form>
